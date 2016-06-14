@@ -17,6 +17,7 @@ alias lsnet='nmap -sn 192.168.1.0/24'
 
 # git
 alias gpom='git push origin master'
+alias gs='git status'
 parse_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
