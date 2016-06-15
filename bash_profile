@@ -19,6 +19,7 @@ alias lsnet='nmap -sn 192.168.1.0/24'
 alias gpom='git push origin master'
 alias gs='git status'
 alias gd='git diff'
+alias rmds='find . -name .DS_Store -print0 | xargs -0 git rm -f --ignore-unmatch'
 parse_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 }
@@ -26,3 +27,4 @@ PS1="\w\$(parse_git_branch) $ "
 
 # editors
 alias gvim='/Applications/MacVim.app/Contents/MacOS/Vim -g'
+
