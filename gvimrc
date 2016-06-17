@@ -1,23 +1,3 @@
-" Use Vim settings, rather than Vi settings (much better!).
-" This must be first, because it changes other options as a side effect.
-set nocompatible
-
-" allow backspacing over everything in insert mode
-set backspace=indent,eol,start
-
-" show cursor position all the time
-set ruler
-set showcmd         " display incomplete commands
-set incsearch       " do incremental searching
-set nu              " show line numbers
-set autoindent
-set nowrap
-
-" tab
-set tabstop=4
-set shiftwidth=4
-set expandtab
-set softtabstop=4
 
 " window size
 set lines=50 columns=86
