@@ -20,7 +20,11 @@ Plugin 'git://git.wincent.com/command-t.git'
 
 Plugin 'flazz/vim-colorschemes'
 
-Plugin 'obsidian2.vim'
+" fuzzy search
+Plugin 'ctrlp.vim'
+
+" nerdtree
+Plugin 'scrooloose/nerdtree'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
