@@ -35,3 +35,9 @@ PS1="${grn}\w\$(parse_git_branch)\[\n\] ${red} > ${end}"
 # editors
 alias gvim='/Applications/MacVim.app/Contents/MacOS/Vim -g'
 
+# tmux
+alias tmn='tmux new -s'
+alias tma='tmux a -t'
+alias tml='tmux ls'
+alias tmk='tmux kill-session -t'
+
