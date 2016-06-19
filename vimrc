@@ -114,3 +114,6 @@ set expandtab
 " color
 colo jelleybeans
 syntax on
+
+" clipboard
+set clipboard=unnamed
