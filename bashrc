@@ -1,4 +1,5 @@
 # colors
+blck=$'\e[1;30m'
 red=$'\e[1;31m'
 grn=$'\e[1;32m'
 yel=$'\e[1;33m'
@@ -29,8 +30,11 @@ alias gd='git diff'
 alias rmds='find . -name .DS_Store -print0 | xargs -0 git rm -f --ignore-unmatch'
 parse_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
-}
-PS1="${grn}\w\$(parse_git_branch)\[\n\] ${red} > ${end}"
+};
+PS1="\[${grn}\]\w\$(parse_git_branch)";
+PS1+="\n";
+PS1+="\[${red}\] > \[${end}\]";
+export PS1;
 
 # editors
 alias gvim='/Applications/MacVim.app/Contents/MacOS/Vim -g'
