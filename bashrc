@@ -45,3 +45,8 @@ alias tma='tmux a -t'
 alias tml='tmux ls'
 alias tmk='tmux kill-session -t'
 
+# VirtualBox
+alias ssherebus='ssh -p 3022 fairclothjm@127.0.0.1'
+alias erebusdown='VBoxManage controlvm Erebus acpipowerbutton'
+alias erebusup='VBoxManage startvm Erebus --type headless'
+alias erebusoff='VBoxManage controlvm Erebus poweroff'
