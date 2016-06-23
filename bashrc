@@ -31,10 +31,23 @@ alias rmds='find . -name .DS_Store -print0 | xargs -0 git rm -f --ignore-unmatch
 parse_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
 };
+
+# bash
 PS1="\[${grn}\]\w\$(parse_git_branch)";
 PS1+="\n";
 PS1+="\[${red}\] > \[${end}\]";
 export PS1;
+# export CLICOLOR=1;
+# LS_COLORS='bxxxxxxxxxxxxxxxxxxxxx';
+# export LS_COLORS;
+if [ -n "$COLORTERM" ];then
+    alias ls='ls -F --color=auto'
+    if [ -x "`which dircolors`" -a -r "$HOME/.dir_colors" ]; then
+        eval `dircolors -b "$HOME/.dir_colors"`
+    fi
+else
+    alias ls='ls -F'
+fi
 
 # editors
 alias gvim='/Applications/MacVim.app/Contents/MacOS/Vim -g'
