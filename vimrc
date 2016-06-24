@@ -117,3 +117,10 @@ syntax on
 
 " clipboard
 set clipboard=unnamed
+
+" side marker for < 80 chars
+if exists('+colorcolumn')
+    set colorcolumn=80
+else
+    au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80.\+', -1)
+endif
