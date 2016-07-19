@@ -52,6 +52,9 @@ fi
 # editors
 alias gvim='/Applications/MacVim.app/Contents/MacOS/Vim -g'
 
+# c++
+alias cppcompile='c++ -std=c++11 -stdlib=libc++'
+
 # tmux
 alias tmn='tmux new -s'
 alias tma='tmux a -t'
