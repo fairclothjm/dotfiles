@@ -64,7 +64,7 @@ set ignorecase
 set smartcase
  
 " allow OS clipboard
-set clipboard=unnamed
+" set clipboard=unnamed
 
 " Allow backspacing over autoindent, line breaks and start of insert action
 set backspace=indent,eol,start
@@ -102,7 +102,8 @@ set cmdheight=2
  
 " Display line numbers on the left
 set number
- 
+set rnu 
+
 " Quickly time out on keycodes, but never time out on mappings
 set notimeout ttimeout ttimeoutlen=200
  
