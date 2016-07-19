@@ -63,3 +63,11 @@ alias ssherebus='ssh -p 3022 fairclothjm@127.0.0.1'
 alias erebusdown='VBoxManage controlvm Erebus acpipowerbutton'
 alias erebusup='VBoxManage startvm Erebus --type headless'
 alias erebusoff='VBoxManage controlvm Erebus poweroff'
+
+# vagrant
+alias cpfiles='vagrant scp ~/programming/rolling-ip-tests ovn-controller:~/demo'
+alias cpandrew='vagrant scp ~/Desktop/andrew ovn-controller:~/'
+
+# work
+alias baremetal='ssh root@108.168.170.196'
+alias jas='ssh root@158.85.174.185'
