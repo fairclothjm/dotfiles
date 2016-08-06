@@ -24,6 +24,7 @@ alias hide='defaults write com.apple.finder AppleShowAllFiles NO'
 alias lsnet='nmap -sn 192.168.1.0/24'
 
 # git
+alias glol='git log --graph --oneline --decorate'
 alias gpom='git push origin master'
 alias gs='git status'
 alias gd='git diff'
