@@ -1,7 +1,7 @@
 # colors
 blck=$'\e[1;30m'
 red=$'\e[1;31m'
-grn=$'\e[1;32m'
+grn=$'\e[0;32m'
 yel=$'\e[1;33m'
 blu=$'\e[1;34m'
 mag=$'\e[1;35m'
@@ -34,13 +34,12 @@ parse_git_branch() {
 };
 
 # bash
-PS1="\[${grn}\]\w\$(parse_git_branch)";
+PS1="\[${grn}\]\W\$(parse_git_branch)";
+# PS1+="\[${blu}\] @ \[${grn}\]\h";
 PS1+="\n";
 PS1+="\[${red}\] > \[${end}\]";
+PS1+="\[$(tput sgr0)\]";
 export PS1;
-# export CLICOLOR=1;
-# LS_COLORS='bxxxxxxxxxxxxxxxxxxxxx';
-# export LS_COLORS;
 if [ -n "$COLORTERM" ];then
     alias ls='ls -F --color=auto'
     if [ -x "`which dircolors`" -a -r "$HOME/.dir_colors" ]; then
@@ -54,7 +53,7 @@ fi
 alias gvim='/Applications/MacVim.app/Contents/MacOS/Vim -g'
 
 # c++
-alias cppcompile='c++ -std=c++11 -stdlib=libc++'
+alias cppcompile='g++ -std=c++11 -stdlib=libc++'
 
 # tmux
 alias tmn='tmux new -s'
@@ -63,6 +62,7 @@ alias tml='tmux ls'
 alias tmk='tmux kill-session -t'
 
 # VirtualBox
+alias vblist='VBoxManage list runningvms'
 alias ssherebus='ssh -p 3022 fairclothjm@127.0.0.1'
 alias erebusdown='VBoxManage controlvm Erebus acpipowerbutton'
 alias erebusup='VBoxManage startvm Erebus --type headless'

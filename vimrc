@@ -26,6 +26,12 @@ Plugin 'ctrlp.vim'
 " nerdtree
 Plugin 'scrooloose/nerdtree'
 
+" cpp highlighting
+Plugin 'octol/vim-cpp-enhanced-highlight'
+
+" vim-javacomplete2
+Plugin 'artur-shaik/vim-javacomplete2'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -113,7 +119,9 @@ set softtabstop=4
 set expandtab
  
 " color
-colo jelleybeans
+" colo jelleybeans
+colo PaperColor
+set background=light
 syntax on
 
 " clipboard
