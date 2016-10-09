@@ -64,7 +64,10 @@ set nowrap
 
 " Highlight searches 
 set hlsearch
- 
+
+" search for visual selection
+:vn // y/<C-R>"<CR>
+
 " Use case insensitive search, except when using capital letters
 set ignorecase
 set smartcase

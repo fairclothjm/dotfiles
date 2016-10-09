@@ -10,6 +10,7 @@ end=$'\e[0m'
 
 # general CLI shortcuts
 alias l='ls -lah'
+alias please='sudo $(history -p !!)'
 
 # school
 alias sch='cd programming/c++/scheck'
@@ -40,13 +41,15 @@ PS1+="\n";
 PS1+="\[${red}\] > \[${end}\]";
 PS1+="\[$(tput sgr0)\]";
 export PS1;
+
+
 if [ -n "$COLORTERM" ];then
     alias ls='ls -F --color=auto'
     if [ -x "`which dircolors`" -a -r "$HOME/.dir_colors" ]; then
         eval `dircolors -b "$HOME/.dir_colors"`
     fi
 else
-    alias ls='ls -F'
+    alias ls='ls -G'
 fi
 
 # editors
@@ -54,6 +57,7 @@ alias gvim='/Applications/MacVim.app/Contents/MacOS/Vim -g'
 
 # c++
 alias cppcompile='g++ -std=c++11 -stdlib=libc++'
+alias vg='valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes'
 
 # tmux
 alias tmn='tmux new -s'
@@ -68,10 +72,12 @@ alias erebusdown='VBoxManage controlvm Erebus acpipowerbutton'
 alias erebusup='VBoxManage startvm Erebus --type headless'
 alias erebusoff='VBoxManage controlvm Erebus poweroff'
 
-# vagrant
-alias cpfiles='vagrant scp ~/programming/rolling-ip-tests ovn-controller:~/demo'
-alias cpandrew='vagrant scp ~/Desktop/andrew ovn-controller:~/'
+# svn
+SVN_EDITOR=vim
+export SVN_EDITOR
 
-# work
-alias baremetal='ssh root@108.168.170.196'
-alias jas='ssh root@158.85.174.185'
+# python3
+    # use Homebrew's directories rather than ~/.pyenv
+export PYENV_ROOT=/usr/local/var/pyenv
+    # enable autocomplete and shims for pyenv
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
