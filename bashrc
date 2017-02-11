@@ -13,14 +13,8 @@ alias l="ls -lah"
 alias please='sudo $(history -p !!)'
 alias dirs="ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/ /' -e 's/-/|/'"
 
-# school
-alias sch="cd programming/c++/scheck"
-alias a3up="rsync -aruv -e ssh ~/Desktop/Assignment3 cosc185@program.cs.uh.edu:"
-alias os="ssh program.cs.uh.edu -l cosc185"
-alias rpg="java -jar /Users/fairclothjm/NetBeansProjects/GroupAssign2/dist/GroupAssign4.jar"
-alias venkat="cd ~/programming/sw_design/dobson_faircloth/assign4/"
-
 # pi
+alias sshpi="ssh pi@10.0.0.131"
 
 
 # mac
@@ -28,7 +22,7 @@ alias showallfiles="defaults write com.apple.finder AppleShowAllFiles YES"
 alias hide="defaults write com.apple.finder AppleShowAllFiles NO"
 
 # networking
-alias lsnet="nmap -sn 192.168.1.0/24"
+alias lsnet="nmap -sn 10.0.0.0/24"
 
 # git
 alias glol="git log --graph --oneline --decorate"
