@@ -78,15 +78,30 @@ alias erebusdown="VBoxManage controlvm Erebus acpipowerbutton"
 alias erebusup="VBoxManage startvm Erebus --type headless"
 alias erebusoff="VBoxManage controlvm Erebus poweroff"
 
+# Vagrant
+function homestead() {
+    ( cd ~/code/php/homestead && vagrant $* )
+}
+
+# php
+alias composer="php /usr/local/bin/composer.phar"
+
 # Linux kernel development environment
 alias sshnyx="ssh shok3001@10.0.0.9"
 
 # svn
-SVN_EDITOR=vim
-export SVN_EDITOR
+export SVN_EDITOR=vim
+
+# go
+export GOPATH=$HOME/code
 
 # python3
     # use Homebrew"s directories rather than ~/.pyenv
 export PYENV_ROOT=/usr/local/var/pyenv
     # enable autocomplete and shims for pyenv
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+
+# SL
+alias devapp="ssh -o TCPKeepAlive=yes -o ServerAliveInterval=50 jmfaircloth@devappdal0501"
+alias opensl="sudo openconnect ibm.remote.softlayer.com"
+
