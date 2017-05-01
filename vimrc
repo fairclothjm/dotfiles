@@ -20,17 +20,18 @@ Plugin 'git://git.wincent.com/command-t.git'
 
 Plugin 'flazz/vim-colorschemes'
 
+Plugin 'delimitMate.vim'
+
 " fuzzy search
 Plugin 'ctrlp.vim'
+
+Plugin 'bufexplorer.zip'
 
 " nerdtree
 Plugin 'scrooloose/nerdtree'
 
-" cpp highlighting
-Plugin 'octol/vim-cpp-enhanced-highlight'
+Plugin 'captbaritone/better-indent-support-for-php-with-html'
 
-" vim-javacomplete2
-Plugin 'artur-shaik/vim-javacomplete2'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -47,6 +48,18 @@ filetype plugin indent on    " required
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
  
+" Leader
+let mapleader = ","
+nmap <leader>ne :NERDTreeToggle<cr>
+
+" recursivelighth searc between session for CtrlP
+let g:ctrlp_clear_cache_on_exit = 0
+
+" Let's find all the files please
+let g:ctrlp_max_files = 0
+
+set path+=**
+
 " Better command-line completion
 set wildmenu
  
@@ -73,7 +86,7 @@ set ignorecase
 set smartcase
  
 " allow OS clipboard
-" set clipboard=unnamed
+set clipboard=unnamed
 
 " Allow backspacing over autoindent, line breaks and start of insert action
 set backspace=indent,eol,start
@@ -83,10 +96,9 @@ set backspace=indent,eol,start
 " coming from other editors would expect.
 set nostartofline
  
-" Display the cursor position on the last line of the screen or in the status
-" line of a window
-set ruler
- 
+" Show horizontal cursor line
+set cursorline 
+
 " Always display the status line, even if only one window is displayed
 set laststatus=2
  
@@ -123,7 +135,9 @@ set expandtab
  
 " color
 " colo jelleybeans
+" colo lucid 
 colo PaperColor
+" colo muon
 set background=light
 syntax on
 
