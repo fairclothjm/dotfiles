@@ -20,6 +20,10 @@ Plugin 'git://git.wincent.com/command-t.git'
 
 Plugin 'flazz/vim-colorschemes'
 
+Plugin 'delimitMate.vim'
+
+Plugin 'bufexplorer.zip'
+
 " fuzzy search
 Plugin 'ctrlp.vim'
 
@@ -47,6 +51,9 @@ filetype plugin indent on    " required
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
  
+" Search recursively; provide tab completion
+set path+=**
+
 " Better command-line completion
 set wildmenu
  
@@ -136,3 +143,8 @@ if exists('+colorcolumn')
 else
     au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80.\+', -1)
 endif
+
+augroup ErrorHiglights
+    autocmd!
+    autocmd WinEnter,BufEnter * call clearmatches() | call matchadd('ErrorMsg', '\s\+$', 100)
+augroup END

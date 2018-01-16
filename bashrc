@@ -9,12 +9,11 @@ cyn=$"\e[1;36m"
 end=$"\e[0m"
 
 # general CLI shortcuts
-alias l="ls -lah"
+#alias l="ls -lah"
 alias please='sudo $(history -p !!)'
-alias dirs="ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/ /' -e 's/-/|/'"
 
 # pi
-alias sshpi="ssh pi@10.0.0.131"
+alias sshpi="ssh pi@192.168.0.16"
 
 
 # mac
@@ -22,7 +21,7 @@ alias showallfiles="defaults write com.apple.finder AppleShowAllFiles YES"
 alias hide="defaults write com.apple.finder AppleShowAllFiles NO"
 
 # networking
-alias lsnet="nmap -sn 10.0.0.0/24"
+alias lsnet="sudo nmap -sn 192.168.0.0/24"
 
 # git
 alias glol="git log --graph --oneline --decorate"
@@ -41,16 +40,6 @@ PS1+="\n";
 PS1+="\[${red}\] > \[${end}\]";
 PS1+="\[$(tput sgr0)\]";
 export PS1;
-
-
-if [ -n "$COLORTERM" ];then
-    alias ls="ls -F --color=auto"
-    if [ -x "`which dircolors`" -a -r "$HOME/.dir_colors" ]; then
-        eval `dircolors -b "$HOME/.dir_colors"`
-    fi
-else
-    alias ls="ls -G"
-fi
 
 # editors
 alias gvim="/Applications/MacVim.app/Contents/MacOS/Vim -g"
