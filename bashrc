@@ -94,8 +94,3 @@ export GOPATH=$HOME/code
 export PYENV_ROOT=/usr/local/var/pyenv
     # enable autocomplete and shims for pyenv
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
-
-# SL
-alias devapp="ssh -o TCPKeepAlive=yes -o ServerAliveInterval=50 jmfaircloth@devappdal0501"
-alias opensl="sudo openconnect ibm.remote.softlayer.com"
-
