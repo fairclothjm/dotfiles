@@ -1,3 +1,7 @@
+if [ -f ~/.bash_aliases ]; then
+. ~/.bash_aliases
+fi
+
 # colors
 blck=$"\e[1;30m"
 red=$"\e[1;31m"
@@ -8,61 +12,25 @@ mag=$"\e[1;35m"
 cyn=$"\e[1;36m"
 end=$"\e[0m"
 
-# general CLI shortcuts
-#alias l="ls -lah"
-alias please='sudo $(history -p !!)'
-
-# pi
-alias sshpi="ssh pi@192.168.0.16"
-
-
-# mac
-alias showallfiles="defaults write com.apple.finder AppleShowAllFiles YES"
-alias hide="defaults write com.apple.finder AppleShowAllFiles NO"
-
-# networking
-alias lsnet="sudo nmap -sn 192.168.0.0/24"
-
-# git
-alias glol="git log --graph --oneline --decorate"
-alias gpom="git push origin master"
-alias gs="git status"
-alias gd="git diff"
-alias rmds="find . -name .DS_Store -print0 | xargs -0 git rm -f --ignore-unmatch"
 parse_git_branch() {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/[\1]/'
 };
 
+dark_gray=$"\e[38;5;246m"
+med_gray=$"\e[38;5;240m"
+light_gray=$"\e[38;5;236m"
+color() {
+    echo -e "\\e[38;5;$1mhello color $1\e[0m"
+}
+
 # bash
-PS1="\[${grn}\]\W\$(parse_git_branch)";
-# PS1+="\[${blu}\] @ \[${grn}\]\h";
-PS1+="\n";
-PS1+="\[${red}\] > \[${end}\]";
-PS1+="\[$(tput sgr0)\]";
-export PS1;
-
-# editors
-alias gvim="/Applications/MacVim.app/Contents/MacOS/Vim -g"
-
-# c++
-alias cppcompile="g++ -std=c++11 -stdlib=libc++"
-alias vg="valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes"
-
-# tmux
-alias tmn="tmux new -s"
-alias tma="tmux a -t"
-alias tml="tmux ls"
-alias tmk="tmux kill-session -t"
-
-# VirtualBox
-alias vblist="VBoxManage list runningvms"
-alias ssherebus="ssh -p 3022 fairclothjm@127.0.0.1"
-alias erebusdown="VBoxManage controlvm Erebus acpipowerbutton"
-alias erebusup="VBoxManage startvm Erebus --type headless"
-alias erebusoff="VBoxManage controlvm Erebus poweroff"
-
-# Linux kernel development environment
-alias sshnyx="ssh shok3001@10.0.0.9"
+if [[ "$TERM" =~ 256color ]]; then
+    PS1="\[${light_gray}\]\w\[${med_gray}\] \$(parse_git_branch)";
+    #PS1+="\n";
+    PS1+="\[${dark_gray}\] $ \[${end}\]";
+    PS1+="\[$(tput sgr0)\]";
+    export PS1;
+fi
 
 # svn
 SVN_EDITOR=vim
