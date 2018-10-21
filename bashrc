@@ -13,7 +13,7 @@ cyn=$"\e[1;36m"
 end=$"\e[0m"
 
 parse_git_branch() {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/[\1]/'
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ [\1]/'
 };
 
 dark_gray=$"\e[38;5;246m"
@@ -25,7 +25,7 @@ color() {
 
 # bash
 if [[ "$TERM" =~ 256color ]]; then
-    PS1="\[${light_gray}\]\w\[${med_gray}\] \$(parse_git_branch)";
+    PS1="\[${light_gray}\]\w\[${med_gray}\]\$(parse_git_branch)";
     #PS1+="\n";
     PS1+="\[${dark_gray}\] $ \[${end}\]";
     PS1+="\[$(tput sgr0)\]";
