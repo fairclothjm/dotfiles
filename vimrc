@@ -24,9 +24,6 @@ Plugin 'delimitMate.vim'
 
 Plugin 'bufexplorer.zip'
 
-" fuzzy search
-Plugin 'ctrlp.vim'
-
 " nerdtree
 Plugin 'scrooloose/nerdtree'
 
