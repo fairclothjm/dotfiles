@@ -1,4 +1,14 @@
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+if [ -d /Users/jm/code/dotfiles/work ]; then
+    . /Users/jm/code/dotfiles/work/work_aliases
+    . /Users/jm/code/dotfiles/work/workrc
+fi
+
 # colors
+# (
 blck=$"\e[1;30m"
 red=$"\e[1;31m"
 grn=$"\e[0;32m"
@@ -7,95 +17,50 @@ blu=$"\e[1;34m"
 mag=$"\e[1;35m"
 cyn=$"\e[1;36m"
 end=$"\e[0m"
+dark_gray=$"\e[38;5;246m"
+med_gray=$"\e[38;5;240m"
+light_gray=$"\e[38;5;236m"
+# )
 
-# general CLI shortcuts
-alias l="ls -lah"
-alias please='sudo $(history -p !!)'
-alias dirs="ls -R | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/ /' -e 's/-/|/'"
+# mac use grep colors
+export GREP_OPTIONS='--color=always'
+export GREP_COLOR='0;32'
 
-# pi
-alias sshpi="ssh pi@10.0.0.131"
+# enable ls coloring
+export CLICOLOR=1
+export LSCOLORS=gxfxcxdxbxegedabagacad
 
-
-# mac
-alias showallfiles="defaults write com.apple.finder AppleShowAllFiles YES"
-alias hide="defaults write com.apple.finder AppleShowAllFiles NO"
-
-# networking
-alias lsnet="nmap -sn 10.0.0.0/24"
-
-# git
-alias glol="git log --graph --oneline --decorate"
-alias gpom="git push origin master"
-alias gs="git status"
-alias gd="git diff"
-alias rmds="find . -name .DS_Store -print0 | xargs -0 git rm -f --ignore-unmatch"
 parse_git_branch() {
-  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \1/'
 };
 
-# bash
-PS1="\[${grn}\]\W\$(parse_git_branch)";
-# PS1+="\[${blu}\] @ \[${grn}\]\h";
-PS1+="\n";
-PS1+="\[${red}\] > \[${end}\]";
-PS1+="\[$(tput sgr0)\]";
-export PS1;
-
-
-if [ -n "$COLORTERM" ];then
-    alias ls="ls -F --color=auto"
-    if [ -x "`which dircolors`" -a -r "$HOME/.dir_colors" ]; then
-        eval `dircolors -b "$HOME/.dir_colors"`
-    fi
-else
-    alias ls="ls -G"
-fi
-
-# editors
-alias gvim="/Applications/MacVim.app/Contents/MacOS/Vim -g"
-
-# c++
-alias cppcompile="g++ -std=c++11 -stdlib=libc++"
-alias vg="valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes"
-
-# tmux
-alias tmn="tmux new -s"
-alias tma="tmux a -t"
-alias tml="tmux ls"
-alias tmk="tmux kill-session -t"
-
-# VirtualBox
-alias vblist="VBoxManage list runningvms"
-alias ssherebus="ssh -p 3022 fairclothjm@127.0.0.1"
-alias erebusdown="VBoxManage controlvm Erebus acpipowerbutton"
-alias erebusup="VBoxManage startvm Erebus --type headless"
-alias erebusoff="VBoxManage controlvm Erebus poweroff"
-
-# Vagrant
-function homestead() {
-    ( cd ~/code/php/homestead && vagrant $* )
+color() {
+    echo -e "\\e[38;5;$1mhello color $1\e[0m"
 }
 
-# php
-alias composer="php /usr/local/bin/composer.phar"
+if [[ -z "$VIMRUNTIME" ]]; then
+    vim_shell=''
+else
+    vim_shell=' v'
+fi
 
-# Linux kernel development environment
-alias sshnyx="ssh shok3001@10.0.0.9"
+# bash
+if [[ "$TERM" =~ 256color ]]; then
+    PS1="\[${light_gray}\]\w\[${med_gray}\]\$(parse_git_branch)";
+    #PS1+="\n";
+    PS1+="\[${grn}\]${vim_shell}";
+    PS1+="\[${dark_gray}\] $ \[${end}\]";
+    PS1+="\[$(tput sgr0)\]";
+    export PS1;
+fi
 
 # svn
 export SVN_EDITOR=vim
 
 # go
-export GOPATH=$HOME/code
+export GOPATH=$HOME/go
 
-# python3
-    # use Homebrew"s directories rather than ~/.pyenv
-export PYENV_ROOT=/usr/local/var/pyenv
-    # enable autocomplete and shims for pyenv
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
-# SL
-alias devapp="ssh -o TCPKeepAlive=yes -o ServerAliveInterval=50 jmfaircloth@devappdal0501"
-alias opensl="sudo openconnect ibm.remote.softlayer.com"
+HISTFILESIZE=100000000
+
 
