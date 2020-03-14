@@ -1,2 +1,2 @@
 # dotfiles
-a place for my dotfiles to live
+A place for my dotfiles to live
