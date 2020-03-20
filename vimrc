@@ -4,59 +4,29 @@ filetype off                  " required
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
+Plugin 'VundleVim/Vundle.vim' " let Vundle manage Vundle, required
 Plugin 'tpope/vim-fugitive'
-
 Plugin 'flazz/vim-colorschemes'
-
 Plugin 'delimitMate.vim'
-
 Plugin 'fatih/vim-go'
-
 Plugin 'bufexplorer.zip'
-
-" nerdtree
 Plugin 'scrooloose/nerdtree'
-
 Plugin 'captbaritone/better-indent-support-for-php-with-html'
 
 " Javascript: syntax highlighting and improved indentation
 Plugin 'pangloss/vim-javascript.git'
 Plugin 'mxw/vim-jsx'
 
-Plugin 'aperezdc/vim-template'
-
-" PEGjs syntax
-Plugin 'alunny/pegjs-vim'
-
 " enable for JS autoformatting
 Plugin 'Chiel92/vim-autoformat'
 
-" python formatting
+Plugin 'aperezdc/vim-template'
+Plugin 'alunny/pegjs-vim'
 Plugin 'psf/black'
 
-" All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
 
 " Leader
 let mapleader = ","
@@ -73,7 +43,8 @@ nnoremap <leader>s <C-W>j
 nnoremap <leader>c <C-W>c
 " clear hlsearch
 nnoremap <leader><space> :noh<cr>
-
+" replace all
+nnoremap <leader>s :%s//g<Left><Left>
 " vim-go
 nmap <leader>gr :GoRun<cr>
 
@@ -83,6 +54,9 @@ map <C-k> :cp<CR>
 
 " format json in visual or select mode with  =j
 nmap =j :%!python -m json.tool<CR>
+
+" search for visual selection
+:vn // y/<C-R>"<CR>
 
 " dont require .jsx extension for  mxw/vim-jsx syntax plugin
 let g:jsx_ext_required = 0
@@ -119,9 +93,6 @@ set nowrap
 
 " Highlight searches
 set hlsearch
-
-" search for visual selection
-:vn // y/<C-R>"<CR>
 
 " Use case insensitive search, except when using capital letters
 set ignorecase
