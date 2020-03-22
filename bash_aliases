@@ -12,6 +12,9 @@ alias jtags="ctags -R config src tests && sed -i '' -E '/^(if|switch|function|mo
 alias showallfiles="defaults write com.apple.finder AppleShowAllFiles YES"
 alias hide="defaults write com.apple.finder AppleShowAllFiles NO"
 
+# networking
+alias lsnet="sudo nmap -sn 192.168.0.0/24"
+
 # git
 alias branchd="git branch | grep -v "master" | xargs git branch -D"
 alias glol="git log --graph --oneline --decorate"
