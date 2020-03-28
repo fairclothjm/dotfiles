@@ -87,6 +87,8 @@ nmap =j :%!python -m json.tool<CR>
 " dont require .jsx extension for  mxw/vim-jsx syntax plugin
 let g:jsx_ext_required = 0
 
+" do not use location list
+let g:go_list_type = "quickfix"
 " disable vim-go template
 let g:go_template_autocreate = 0
 let g:go_highlight_structs = 1
