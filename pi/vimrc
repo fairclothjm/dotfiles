@@ -5,24 +5,12 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-Plugin 'VundleVim/Vundle.vim' " let Vundle manage Vundle, required
-Plugin 'tpope/vim-fugitive'
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'delimitMate.vim'
-Plugin 'fatih/vim-go'
 Plugin 'bufexplorer.zip'
 Plugin 'scrooloose/nerdtree'
-Plugin 'captbaritone/better-indent-support-for-php-with-html'
-
-" Javascript: syntax highlighting and improved indentation
-Plugin 'pangloss/vim-javascript.git'
-Plugin 'mxw/vim-jsx'
-
-" enable for JS autoformatting
-Plugin 'Chiel92/vim-autoformat'
-
-Plugin 'aperezdc/vim-template'
-Plugin 'alunny/pegjs-vim'
 Plugin 'psf/black'
 
 call vundle#end()            " required
@@ -57,24 +45,6 @@ nmap =j :%!python -m json.tool<CR>
 
 " search for visual selection
 :vn // y/<C-R>"<CR>
-
-" dont require .jsx extension for  mxw/vim-jsx syntax plugin
-let g:jsx_ext_required = 0
-
-" do not use location list
-let g:go_list_type = "quickfix"
-" disable vim-go template
-let g:go_template_autocreate = 0
-let g:go_highlight_structs = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_operators = 1
-" use gofmt on save instead of the default goimports
-" let g:go_fmt_command = "gofmt"
-
-" show errors
-let g:go_metalinter_autosave=1
-let g:go_metalinter_autosave_enabled=['golint', 'errcheck', 'deadcode']
 
 set path+=**
 
@@ -138,7 +108,6 @@ set cmdheight=2
 
 " Display line numbers on the left
 set number
-set rnu
 
 " Quickly time out on keycodes, but never time out on mappings
 set notimeout ttimeout ttimeoutlen=200
@@ -148,13 +117,10 @@ set shiftwidth=4
 set softtabstop=4
 set expandtab
 
-" show tab as 4 spaces for Go
-autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
-
 " color
-" colo jelleybeans
-" colo lucius
-colo lucidity
+colo jelleybeans
+"colo lucius
+"colo lucid
 "colo PaperColor
 "set background=light
 "set background=dark
