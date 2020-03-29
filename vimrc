@@ -87,6 +87,9 @@ set showcmd
 " show cursor position
 set ruler
 
+" Delete comment character when joining commented lines
+set formatoptions+=j
+
 "do incremental searching
 set incsearch
 
