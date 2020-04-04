@@ -32,21 +32,17 @@ filetype plugin indent on    " required
 let mapleader = ","
 nmap <leader>ne :NERDTreeToggle<cr>
 nmap <leader>nf :NERDTreeFind<cr>
-nnoremap <leader>g :grep <C-R><C-W> **/* -s<CR>:cw<CR>
+nnoremap <leader>Gr :grep <C-R><C-W> **/* <CR>:cw<CR>
+nnoremap <leader>gr :grep <C-R><C-W>
 " copy current file path
 nnoremap <leader>cf :let @*=expand("%:p")<CR>
-" window nav
-nnoremap <leader>f <C-W>l
-nnoremap <leader>a <C-W>h
-nnoremap <leader>w <C-W>k
-nnoremap <leader>s <C-W>j
-nnoremap <leader>c <C-W>c
 " clear hlsearch
 nnoremap <leader><space> :noh<cr>
-" replace all
-nnoremap <leader>s :%s//g<Left><Left>
+nnoremap <leader>s :%s/<C-R><C-W>/
+
 " vim-go
-nmap <leader>gr :GoRun<cr>
+nmap <leader>gor :GoRun<cr>
+nmap <leader>got :GoTest<cr>
 
 " ctrl-j and ctrl-k to jump through quickfix list
 map <C-j> :cn<CR>
@@ -141,7 +137,6 @@ set cmdheight=2
 
 " Display line numbers on the left
 set number
-set rnu
 
 " Quickly time out on keycodes, but never time out on mappings
 set notimeout ttimeout ttimeoutlen=200
