@@ -43,6 +43,7 @@ nnoremap <leader>s :%s/<C-R><C-W>/
 " vim-go
 nmap <leader>gor :GoRun<cr>
 nmap <leader>got :GoTest<cr>
+nmap <leader>goi :GoImport
 
 " ctrl-j and ctrl-k to jump through quickfix list
 map <C-j> :cn<CR>
@@ -71,6 +72,9 @@ let g:go_highlight_operators = 1
 " show errors
 let g:go_metalinter_autosave=1
 let g:go_metalinter_autosave_enabled=['golint', 'errcheck', 'deadcode']
+
+" do not auto insert in new buffers
+let g:templates_no_autocmd = 1
 
 set path+=**
 
@@ -145,9 +149,6 @@ set notimeout ttimeout ttimeoutlen=200
 set shiftwidth=4
 set softtabstop=4
 set expandtab
-
-" show tab as 4 spaces for Go
-autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 
 " color
 " colo jelleybeans
