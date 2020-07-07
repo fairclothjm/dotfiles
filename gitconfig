@@ -1,0 +1,12 @@
+[user]
+	name = JM Faircloth
+	email = fairclothjm@gmail.com
+[core]
+	excludesfile = ~/.gitignore_global
+	editor = vim
+[push]
+	default = simple
+[alias]
+	co = checkout
+	st = status
+	d = diff
