@@ -3,6 +3,8 @@ alias l="ls -lah"
 alias please='sudo $(history -p !!)'
 
 # strip newline from pbcopy
+# usage:
+#   echo file.txt | copy
 alias copy="tr -d '\n' | pbcopy"
 
 # ctags for js

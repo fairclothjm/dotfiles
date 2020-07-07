@@ -23,7 +23,7 @@ Plugin 'Chiel92/vim-autoformat'
 
 Plugin 'aperezdc/vim-template'
 Plugin 'alunny/pegjs-vim'
-Plugin 'psf/black'
+" Plugin 'psf/black'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -49,6 +49,12 @@ nmap <leader>goi :GoImport
 map <C-j> :cn<CR>
 map <C-k> :cp<CR>
 
+" wrap long lines in quickfix
+augroup quickfix
+    autocmd!
+    autocmd FileType qf setlocal wrap
+augroup END
+
 " format json in visual or select mode with  =j
 nmap =j :%!python -m json.tool<CR>
 
@@ -66,11 +72,9 @@ let g:go_highlight_structs = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_operators = 1
-" use gofmt on save instead of the default goimports
-" let g:go_fmt_command = "gofmt"
 
 " show errors
-let g:go_metalinter_autosave=1
+let g:go_metalinter_autosave=0
 let g:go_metalinter_autosave_enabled=['golint', 'errcheck', 'deadcode']
 
 " do not auto insert in new buffers
@@ -181,4 +185,4 @@ autocmd Filetype scss setlocal ts=2 sw=2 sts=2
 
 " auto format on save
 au BufWrite *.js :Autoformat
-au BufWrite *.py :Black
+"au BufWrite *.py :Black
