@@ -23,7 +23,7 @@ Plugin 'Chiel92/vim-autoformat'
 
 Plugin 'aperezdc/vim-template'
 Plugin 'alunny/pegjs-vim'
-Plugin 'psf/black'
+" Plugin 'psf/black'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -32,25 +32,28 @@ filetype plugin indent on    " required
 let mapleader = ","
 nmap <leader>ne :NERDTreeToggle<cr>
 nmap <leader>nf :NERDTreeFind<cr>
-nnoremap <leader>g :grep <C-R><C-W> **/* -s<CR>:cw<CR>
+nnoremap <leader>Gr :grep <C-R><C-W> **/* <CR>:cw<CR>
+nnoremap <leader>gr :grep <C-R><C-W>
 " copy current file path
 nnoremap <leader>cf :let @*=expand("%:p")<CR>
-" window nav
-nnoremap <leader>f <C-W>l
-nnoremap <leader>a <C-W>h
-nnoremap <leader>w <C-W>k
-nnoremap <leader>s <C-W>j
-nnoremap <leader>c <C-W>c
 " clear hlsearch
 nnoremap <leader><space> :noh<cr>
-" replace all
-nnoremap <leader>s :%s//g<Left><Left>
+nnoremap <leader>s :%s/<C-R><C-W>/
+
 " vim-go
-nmap <leader>gr :GoRun<cr>
+nmap <leader>gor :GoRun<cr>
+nmap <leader>got :GoTest<cr>
+nmap <leader>goi :GoImport
 
 " ctrl-j and ctrl-k to jump through quickfix list
 map <C-j> :cn<CR>
 map <C-k> :cp<CR>
+
+" wrap long lines in quickfix
+augroup quickfix
+    autocmd!
+    autocmd FileType qf setlocal wrap
+augroup END
 
 " format json in visual or select mode with  =j
 nmap =j :%!python -m json.tool<CR>
@@ -61,18 +64,21 @@ nmap =j :%!python -m json.tool<CR>
 " dont require .jsx extension for  mxw/vim-jsx syntax plugin
 let g:jsx_ext_required = 0
 
+" do not use location list
+let g:go_list_type = "quickfix"
 " disable vim-go template
 let g:go_template_autocreate = 0
 let g:go_highlight_structs = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_operators = 1
-" use gofmt on save instead of the default goimports
-" let g:go_fmt_command = "gofmt"
 
 " show errors
-let g:go_metalinter_autosave=1
+let g:go_metalinter_autosave=0
 let g:go_metalinter_autosave_enabled=['golint', 'errcheck', 'deadcode']
+
+" do not auto insert in new buffers
+let g:templates_no_autocmd = 1
 
 set path+=**
 
@@ -84,6 +90,9 @@ set showcmd
 
 " show cursor position
 set ruler
+
+" Delete comment character when joining commented lines
+set formatoptions+=j
 
 "do incremental searching
 set incsearch
@@ -136,7 +145,6 @@ set cmdheight=2
 
 " Display line numbers on the left
 set number
-set rnu
 
 " Quickly time out on keycodes, but never time out on mappings
 set notimeout ttimeout ttimeoutlen=200
@@ -145,9 +153,6 @@ set notimeout ttimeout ttimeoutlen=200
 set shiftwidth=4
 set softtabstop=4
 set expandtab
-
-" show tab as 4 spaces for Go
-autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 
 " color
 " colo jelleybeans
@@ -180,4 +185,4 @@ autocmd Filetype scss setlocal ts=2 sw=2 sts=2
 
 " auto format on save
 au BufWrite *.js :Autoformat
-au BufWrite *.py :Black
+"au BufWrite *.py :Black

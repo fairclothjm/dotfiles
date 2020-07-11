@@ -23,7 +23,7 @@ light_gray=$"\e[38;5;236m"
 # )
 
 # mac use grep colors
-export GREP_OPTIONS='--color=always'
+export GREP_OPTIONS='--color=auto'
 export GREP_COLOR='0;32'
 
 # enable ls coloring
