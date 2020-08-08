@@ -26,13 +26,14 @@ check_code() {
 
     if [[ "$code" -ne 0 ]]; then
         echo "${txtred}[error]${txtreset} could not symlink $file"
+    else
+        echo "created symlink to $file"
     fi
 }
 
 
 for file in `ls ${pi_path}`; do
     if [[ ! " ${skip[@]} " =~ " ${file} " ]]; then
-        echo "creating symlink to $file"
         ln -sf $pi_path/$file ~/.$file
         check_code $? $file
     fi
@@ -41,7 +42,6 @@ done
 
 echo "setting up git configs"
 for file in `ls ${git_path}`; do
-    echo "creating symlink to $file"
     ln -sf $git_path/$file ~/.$file
     check_code $? $file
 done
