@@ -19,10 +19,6 @@ alias lsnet="sudo nmap -sn 192.168.0.0/24"
 
 # git
 alias branchd="git branch | grep -v "master" | xargs git branch -D"
-alias glol="git log --graph --oneline --decorate"
-alias gpom="git push origin master"
-alias gs="git status"
-alias gd="git diff"
 alias rmds="find . -name .DS_Store -print0 | xargs -0 git rm -f --ignore-unmatch"
 
 # editors
