@@ -28,9 +28,18 @@ export GREP_COLOR='0;32'
 export CLICOLOR=1
 export LSCOLORS=gxfxcxdxbxegedabagacad
 
+# git
 parse_git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \1/'
 };
+
+function gtag() {
+    git push origin :"$1"
+    git tag -d "$1"
+    git tag "$1"
+    git push origin "$1"
+}
+
 
 if [[ -z "$VIMRUNTIME" ]]; then
     vim_shell=''

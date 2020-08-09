@@ -35,7 +35,3 @@ alias tma="tmux a -t"
 alias tml="tmux ls"
 alias tmk="tmux kill-session -t"
 
-function cisserv() {
-    ( cd ~/cis/CIS && source .venv/bin/activate && gunicorn --reload CIS.broker.broker.broker)
-}
-
