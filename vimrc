@@ -23,7 +23,7 @@ Plugin 'Chiel92/vim-autoformat'
 
 Plugin 'aperezdc/vim-template'
 Plugin 'alunny/pegjs-vim'
-" Plugin 'psf/black'
+"Plugin 'psf/black'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
