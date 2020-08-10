@@ -11,8 +11,9 @@ HISTCONTROL=ignoreboth
 # append to the history file, don't overwrite it
 shopt -s histappend
 
-HISTSIZE=100000
-HISTFILESIZE=200000
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
+HISTSIZE=500000
+HISTFILESIZE=100000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.

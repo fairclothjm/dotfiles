@@ -63,6 +63,9 @@ export SVN_EDITOR=vim
 export GOPATH=$HOME/go
 
 
-HISTFILESIZE=100000000
+# history
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
+HISTSIZE=500000
+HISTFILESIZE=100000
 
 
