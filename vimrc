@@ -21,33 +21,11 @@ Plugin 'mxw/vim-jsx'
 " enable for JS autoformatting
 Plugin 'Chiel92/vim-autoformat'
 
-Plugin 'aperezdc/vim-template'
 Plugin 'alunny/pegjs-vim'
 "Plugin 'psf/black'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
-
-" Leader
-let mapleader = ","
-nmap <leader>ne :NERDTreeToggle<cr>
-nmap <leader>nf :NERDTreeFind<cr>
-nnoremap <leader>Gr :grep <C-R><C-W> **/* <CR>:cw<CR>
-nnoremap <leader>gr :grep <C-R><C-W>
-" copy current file path
-nnoremap <leader>cf :let @*=expand("%:p")<CR>
-" clear hlsearch
-nnoremap <leader><space> :noh<cr>
-nnoremap <leader>s :%s/<C-R><C-W>/
-
-" vim-go
-nmap <leader>gor :GoRun<cr>
-nmap <leader>got :GoTest<cr>
-nmap <leader>goi :GoImport
-
-" ctrl-j and ctrl-k to jump through quickfix list
-map <C-j> :cn<CR>
-map <C-k> :cp<CR>
 
 " wrap long lines in quickfix
 augroup quickfix
@@ -64,21 +42,23 @@ nmap =j :%!python -m json.tool<CR>
 " dont require .jsx extension for  mxw/vim-jsx syntax plugin
 let g:jsx_ext_required = 0
 
-" do not use location list
-let g:go_list_type = "quickfix"
-" disable vim-go template
-let g:go_template_autocreate = 0
+" * * * * * * * * * *
+" vim-go settings
+
+let g:go_list_type = "quickfix"         " do not use location list
+let g:go_template_autocreate = 0        " disable vim-go template
+
 let g:go_highlight_structs = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_operators = 1
 
-" show errors
 let g:go_metalinter_autosave=0
 let g:go_metalinter_autosave_enabled=['golint', 'errcheck', 'deadcode']
 
-" do not auto insert in new buffers
-let g:templates_no_autocmd = 1
+" * * * * * * * * * *
+" vim settings
+"
 
 set path+=**
 
@@ -96,12 +76,11 @@ set formatoptions+=j
 
 "do incremental searching
 set incsearch
+set hlsearch
 
 set autoindent
 set nowrap
 
-" Highlight searches
-set hlsearch
 
 " Use case insensitive search, except when using capital letters
 set ignorecase
@@ -139,11 +118,8 @@ set t_vb=
 " Enable use of the mouse for all modes
 set mouse=a
 
-" Set the command window height to 2 lines, to avoid many cases of having to
-"press <Enter> to continue"
 set cmdheight=2
 
-" Display line numbers on the left
 set number
 
 " Quickly time out on keycodes, but never time out on mappings
@@ -154,16 +130,12 @@ set shiftwidth=4
 set softtabstop=4
 set expandtab
 
+
+" * * * * * * * * * *
 " color
-" colo jelleybeans
-" colo lucius
-colo lucidity
-"colo PaperColor
-"set background=light
-"set background=dark
+colo jelleybeans
 syntax on
 
-" clipboard
 set clipboard=unnamed
 
 " side marker for < 80 chars
@@ -178,11 +150,49 @@ augroup ErrorHiglights
     autocmd WinEnter,BufEnter * call clearmatches() | call matchadd('ErrorMsg', '\s\+$', 100)
 augroup END
 
+
+" * * * * * * * * * *
 " filetype specific options
 autocmd Filetype javascript setlocal ts=2 sw=2 sts=2
 autocmd Filetype json setlocal ts=2 sw=2 sts=2
 autocmd Filetype scss setlocal ts=2 sw=2 sts=2
 
+
+" * * * * * * * * * *
 " auto format on save
 au BufWrite *.js :Autoformat
 "au BufWrite *.py :Black
+
+
+" * * * * * * * * * *
+" Leader mappings
+let mapleader = ","
+nmap <leader>ne :NERDTreeToggle<cr>
+nmap <leader>nf :NERDTreeFind<cr>
+nnoremap <leader>Gr :grep <C-R><C-W> **/* <CR>:cw<CR>
+nnoremap <leader>gr :grep <C-R><C-W>
+" copy current file path
+nnoremap <leader>cf :let @*=expand("%:p")<CR>
+" clear hlsearch
+nnoremap <leader><space> :noh<cr>
+nnoremap <leader>s :%s/<C-R><C-W>/
+
+" * * * * * * * * * *
+" vim-go
+nmap <leader>gor :GoRun<cr>
+nmap <leader>got :GoTest<cr>
+nmap <leader>goi :GoImport
+
+" ctrl-j and ctrl-k to jump through quickfix list
+map <C-j> :cn<CR>
+map <C-k> :cp<CR>
+
+
+" * * * * * * * * * *
+" snippets
+
+" go
+nnoremap <leader>ge :read $HOME/code/dotfiles/vim/snippets/go/err<CR>o
+
+" markdown
+nnoremap <leader>cb :read $HOME/code/dotfiles/vim/snippets/md/codeblock<CR>o
