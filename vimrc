@@ -6,32 +6,41 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim' " let Vundle manage Vundle, required
+
 Plugin 'tpope/vim-fugitive'
-Plugin 'flazz/vim-colorschemes'
 Plugin 'delimitMate.vim'
 Plugin 'fatih/vim-go'
+
+" editor and file exploration
 Plugin 'bufexplorer.zip'
 Plugin 'scrooloose/nerdtree'
-Plugin 'captbaritone/better-indent-support-for-php-with-html'
 
 " Javascript: syntax highlighting and improved indentation
 Plugin 'pangloss/vim-javascript.git'
 Plugin 'mxw/vim-jsx'
+Plugin 'Chiel92/vim-autoformat'         " enable for JS autoformatting
 
-" enable for JS autoformatting
-Plugin 'Chiel92/vim-autoformat'
-
-Plugin 'alunny/pegjs-vim'
-"Plugin 'psf/black'
+"Plugin 'alunny/pegjs-vim'
+"Plugin 'psf/black'                     " python formatting (currently broken)
 
 call vundle#end()            " required
 filetype plugin indent on    " required
+
+if has('termguicolors')
+  set termguicolors
+endif
 
 " wrap long lines in quickfix
 augroup quickfix
     autocmd!
     autocmd FileType qf setlocal wrap
 augroup END
+
+" adjust quickfix window height automatically
+au FileType qf call AdjustWindowHeight(3, 10)
+function! AdjustWindowHeight(minheight, maxheight)
+  exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
+endfunction
 
 " format json in visual or select mode with  =j
 nmap =j :%!python -m json.tool<CR>
@@ -133,7 +142,7 @@ set expandtab
 
 " * * * * * * * * * *
 " color
-colo jelleybeans
+colo spacegray
 syntax on
 
 set clipboard=unnamed
