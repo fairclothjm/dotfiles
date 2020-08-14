@@ -39,11 +39,8 @@ augroup END
 " adjust quickfix window height automatically
 au FileType qf call AdjustWindowHeight(3, 10)
 function! AdjustWindowHeight(minheight, maxheight)
-  exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
+    exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
 endfunction
-
-" format json in visual or select mode with  =j
-nmap =j :%!python -m json.tool<CR>
 
 " search for visual selection
 :vn // y/<C-R>"<CR>
@@ -51,24 +48,10 @@ nmap =j :%!python -m json.tool<CR>
 " dont require .jsx extension for  mxw/vim-jsx syntax plugin
 let g:jsx_ext_required = 0
 
-" * * * * * * * * * *
-" vim-go settings
-
-let g:go_list_type = "quickfix"         " do not use location list
-let g:go_template_autocreate = 0        " disable vim-go template
-
-let g:go_highlight_structs = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_operators = 1
-
-let g:go_metalinter_autosave=0
-let g:go_metalinter_autosave_enabled=['golint', 'errcheck', 'deadcode']
 
 " * * * * * * * * * *
 " vim settings
 "
-
 set path+=**
 
 " Better command-line completion
@@ -89,7 +72,6 @@ set hlsearch
 
 set autoindent
 set nowrap
-
 
 " Use case insensitive search, except when using capital letters
 set ignorecase
@@ -139,32 +121,47 @@ set shiftwidth=4
 set softtabstop=4
 set expandtab
 
-
-" * * * * * * * * * *
-" color
-colo spacegray
-syntax on
+set colorcolumn=80
 
 set clipboard=unnamed
 
-" side marker for < 80 chars
-if exists('+colorcolumn')
-    set colorcolumn=80
-else
-    au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80.\+', -1)
-endif
-
-augroup ErrorHiglights
+" error highlight whitespace
+augroup whitespace
     autocmd!
-    autocmd WinEnter,BufEnter * call clearmatches() | call matchadd('ErrorMsg', '\s\+$', 100)
+    highlight ExtraWhitespace ctermbg=red guibg=darkred
+    autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=darkred
+    match ExtraWhitespace /\s\+$/
+    autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+    autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+    autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+    autocmd BufWinLeave * call clearmatches()
 augroup END
 
 
 " * * * * * * * * * *
+" color
+
+colo thanatos
+
+syntax on
+
+" identify the syntax highlighting group used at the cursor
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+    \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+    \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+
+" * * * * * * * * * *
 " filetype specific options
-autocmd Filetype javascript setlocal ts=2 sw=2 sts=2
-autocmd Filetype json setlocal ts=2 sw=2 sts=2
-autocmd Filetype scss setlocal ts=2 sw=2 sts=2
+augroup filetype
+    autocmd!
+    autocmd Filetype javascript setlocal ts=2 sw=2 sts=2
+    autocmd Filetype json setlocal ts=2 sw=2 sts=2
+    autocmd Filetype scss setlocal ts=2 sw=2 sts=2
+augroup END
+
+" format json in visual or select mode with  =j
+nmap =j :%!python -m json.tool<CR>
 
 
 " * * * * * * * * * *
@@ -191,6 +188,18 @@ nnoremap <leader>s :%s/<C-R><C-W>/
 nmap <leader>gor :GoRun<cr>
 nmap <leader>got :GoTest<cr>
 nmap <leader>goi :GoImport
+
+let g:go_list_type = "quickfix"         " do not use location list
+let g:go_template_autocreate = 0        " disable vim-go template
+
+let g:go_highlight_structs = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_operators = 1
+
+let g:go_metalinter_autosave=0
+let g:go_metalinter_autosave_enabled=['golint', 'errcheck', 'deadcode']
+
 
 " ctrl-j and ctrl-k to jump through quickfix list
 map <C-j> :cn<CR>
