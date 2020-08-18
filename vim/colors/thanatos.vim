@@ -108,3 +108,6 @@ hi link Typedef Type
 hi! link Todo Debug
 hi! link DiffText Debug
 
+" shell
+hi link shDerefVar Identifier
+hi link shDerefSimple Identifier
