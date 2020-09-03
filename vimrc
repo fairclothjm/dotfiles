@@ -183,6 +183,7 @@ nnoremap <leader>cf :let @*=expand("%:p")<CR>
 nnoremap <leader><space> :noh<cr>
 nnoremap <leader>s :%s/<C-R><C-W>/
 
+
 " * * * * * * * * * *
 " vim-go
 nmap <leader>gor :GoRun<cr>
@@ -210,7 +211,7 @@ map <C-k> :cp<CR>
 " snippets
 
 " go
-nnoremap <leader>ge :read $HOME/code/dotfiles/vim/snippets/go/err<CR>o
+nnoremap <leader>ger <ESC> :read $HOME/code/dotfiles/vim/snippets/go/err <CR>=%o
 
 " markdown
 nnoremap <leader>cb :read $HOME/code/dotfiles/vim/snippets/md/codeblock<CR>o

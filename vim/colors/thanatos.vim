@@ -39,7 +39,7 @@ hi Search guifg=#14140f guibg=#cccccc guisp=#cccccc gui=NONE ctermfg=232 ctermbg
 hi ModeMsg guifg=#14140f guibg=#cccccc guisp=#cccccc gui=NONE ctermfg=232 ctermbg=252 cterm=NONE
 hi WildMenu guifg=NONE guibg=#A1A6A8 guisp=#A1A6A8 gui=NONE ctermfg=NONE ctermbg=248 cterm=NONE
 hi SignColumn guifg=#192224 guibg=#536991 guisp=#536991 gui=NONE ctermfg=235 ctermbg=60 cterm=NONE
-hi Title guifg=#b3b3b3 guibg=#252a2b guisp=#252a2b gui=bold ctermfg=249 ctermbg=235 cterm=bold
+hi Title guifg=#cccccc guibg=#14140f guisp=#14140f gui=bold ctermfg=252 ctermbg=233 cterm=bold
 hi Folded guifg=#192224 guibg=#A1A6A8 guisp=#A1A6A8 gui=italic ctermfg=235 ctermbg=248 cterm=NONE
 hi FoldColumn guifg=#192224 guibg=#A1A6A8 guisp=#A1A6A8 gui=italic ctermfg=235 ctermbg=248 cterm=NONE
 hi NonText guifg=#5E6C70 guibg=NONE guisp=NONE gui=italic ctermfg=66 ctermbg=NONE cterm=NONE

@@ -56,8 +56,7 @@ if [[ "$TERM" =~ 256color ]]; then
     export PS1;
 fi
 
-# svn
-export SVN_EDITOR=vim
+export EDITOR=vim
 
 # go
 export GOPATH=$HOME/go
