@@ -15,8 +15,10 @@ Plugin 'bufexplorer.zip'
 Plugin 'scrooloose/nerdtree'
 
 " Javascript: syntax highlighting and improved indentation
-Plugin 'pangloss/vim-javascript.git'
-Plugin 'mxw/vim-jsx'
+"Plugin 'pangloss/vim-javascript.git'
+"Plugin 'mxw/vim-jsx'
+Plugin 'maxmellon/vim-jsx-pretty'
+
 Plugin 'Chiel92/vim-autoformat'         " enable for JS autoformatting
 
 "Plugin 'alunny/pegjs-vim'
