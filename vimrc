@@ -175,8 +175,8 @@ au BufWrite *.js :Autoformat
 let mapleader = ","
 nmap <leader>ne :NERDTreeToggle<cr>
 nmap <leader>nf :NERDTreeFind<cr>
-nnoremap <leader>Gr :grep <C-R><C-W> **/* <CR>:cw<CR>
-nnoremap <leader>gr :grep <C-R><C-W>
+nnoremap <leader>Gr :grep -r <C-R><C-W> **/* <CR>
+nnoremap <leader>gr :grep -r --exclude-dir={mocks,} <C-R><C-W>
 " copy current file path
 nnoremap <leader>cf :let @*=expand("%:p")<CR>
 " clear hlsearch
