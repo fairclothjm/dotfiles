@@ -1,6 +1,6 @@
 # dotfiles
 
-Manage dotfile symlinks using [GNU Stow](A place for my dotfiles to live).
+Manage dotfile symlinks using [GNU Stow](https://www.gnu.org/software/stow/).
 
 Sync with the home directory:
 ```
