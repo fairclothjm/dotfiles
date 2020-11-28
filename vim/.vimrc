@@ -15,20 +15,18 @@ Plugin 'bufexplorer.zip'
 Plugin 'scrooloose/nerdtree'
 
 " Javascript: syntax highlighting and improved indentation
-"Plugin 'pangloss/vim-javascript.git'
-"Plugin 'mxw/vim-jsx'
 Plugin 'maxmellon/vim-jsx-pretty'
 
 Plugin 'Chiel92/vim-autoformat'         " enable for JS autoformatting
 
 "Plugin 'alunny/pegjs-vim'
-"Plugin 'psf/black'                     " python formatting (currently broken)
+Plugin 'psf/black'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
 
 if has('termguicolors')
-  set termguicolors
+    set termguicolors
 endif
 
 " wrap long lines in quickfix
@@ -45,10 +43,6 @@ endfunction
 
 " search for visual selection
 :vn // y/<C-R>"<CR>
-
-" dont require .jsx extension for  mxw/vim-jsx syntax plugin
-let g:jsx_ext_required = 0
-
 
 " * * * * * * * * * *
 " vim settings
@@ -124,8 +118,6 @@ set expandtab
 
 set colorcolumn=80
 
-set clipboard=unnamed
-
 " error highlight whitespace
 augroup whitespace
     autocmd!
@@ -153,15 +145,6 @@ map <F10> :echo "hi<"
     \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 
-" * * * * * * * * * *
-" filetype specific options
-augroup filetype
-    autocmd!
-    autocmd Filetype javascript setlocal ts=2 sw=2 sts=2
-    autocmd Filetype json setlocal ts=2 sw=2 sts=2
-    autocmd Filetype scss setlocal ts=2 sw=2 sts=2
-augroup END
-
 " format json in visual or select mode with  =j
 nmap =j :%!python -m json.tool<CR>
 
@@ -185,6 +168,10 @@ nnoremap <leader>cf :let @*=expand("%:p")<CR>
 nnoremap <leader><space> :noh<cr>
 nnoremap <leader>s :%s/<C-R><C-W>/
 
+" ctrl-j and ctrl-k to jump through quickfix list
+map <C-j> :cn<CR>
+map <C-k> :cp<CR>
+
 
 " * * * * * * * * * *
 " vim-go
@@ -204,16 +191,5 @@ let g:go_metalinter_autosave=0
 let g:go_metalinter_autosave_enabled=['golint', 'errcheck', 'deadcode']
 
 
-" ctrl-j and ctrl-k to jump through quickfix list
-map <C-j> :cn<CR>
-map <C-k> :cp<CR>
-
-
-" * * * * * * * * * *
-" snippets
-
-" go
-nnoremap <leader>ger <ESC> :read $HOME/code/dotfiles/vim/snippets/go/err <CR>=%o
-
-" markdown
-nnoremap <leader>cb :read $HOME/code/dotfiles/vim/snippets/md/codeblock<CR>o
+" To see all leader mappings:
+" vim -c 'set t_te=' -c 'set t_ti=' -c 'map ,' -c q | sort

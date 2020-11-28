@@ -2,3 +2,6 @@
 *.swp
 
 /work
+
+vim/.vim/black/
+vim/.vim/bundle/
