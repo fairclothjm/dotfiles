@@ -148,9 +148,6 @@ nnoremap <leader>s :%s/<C-R><C-W>/
 " Plugin configuration
 "
 
-" black
-let g:black_virtualenv = "~/.vim/plugged/blackvenv"
-
 " vim-go
 nmap <leader>gor :GoRun<cr>
 nmap <leader>got :GoTest<cr>

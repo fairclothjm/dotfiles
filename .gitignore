@@ -6,3 +6,4 @@
 # ignore vim-plug and its plugins
 vim/.vim/autoload/plug.vim
 vim/.vim/plugged/
+vim/.vim/black/
