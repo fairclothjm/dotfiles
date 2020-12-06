@@ -127,6 +127,9 @@ nmap =j :%!python -m json.tool<CR>
 " search for visual selection
 :vn // y/<C-R>"<CR>
 
+" do NOT yank with x/s
+nnoremap x "_x
+nnoremap s "_s
 
 " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 " Leader mappings
