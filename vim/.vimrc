@@ -4,22 +4,20 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-Plugin 'VundleVim/Vundle.vim' " let Vundle manage Vundle, required
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
 
-Plugin 'tpope/vim-fugitive'
 Plugin 'delimitMate.vim'
-Plugin 'fatih/vim-go'
+Plugin 'tpope/vim-fugitive'
 
 " editor and file exploration
 Plugin 'bufexplorer.zip'
 Plugin 'scrooloose/nerdtree'
 
-" Javascript: syntax highlighting and improved indentation
+" syntax
+Plugin 'Chiel92/vim-autoformat'
+Plugin 'fatih/vim-go'
 Plugin 'maxmellon/vim-jsx-pretty'
-
-Plugin 'Chiel92/vim-autoformat'         " enable for JS autoformatting
-
-"Plugin 'alunny/pegjs-vim'
 Plugin 'psf/black'
 
 call vundle#end()            " required
@@ -29,94 +27,16 @@ if has('termguicolors')
     set termguicolors
 endif
 
-" wrap long lines in quickfix
-augroup quickfix
-    autocmd!
-    autocmd FileType qf setlocal wrap
-augroup END
 
-" adjust quickfix window height automatically
-au FileType qf call AdjustWindowHeight(3, 10)
-function! AdjustWindowHeight(minheight, maxheight)
-    exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
-endfunction
-
-" search for visual selection
-:vn // y/<C-R>"<CR>
-
-" * * * * * * * * * *
-" vim settings
+" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+" autocommands
 "
-set path+=**
 
-" Better command-line completion
-set wildmenu
-
-" Show partial commands in the last line of the screen
-set showcmd
-
-" show cursor position
-set ruler
-
-" Delete comment character when joining commented lines
-set formatoptions+=j
-
-"do incremental searching
-set incsearch
-set hlsearch
-
-set autoindent
-set nowrap
-
-" Use case insensitive search, except when using capital letters
-set ignorecase
-set smartcase
-
-" allow OS clipboard
-set clipboard=unnamed
-
-" Allow backspacing over autoindent, line breaks and start of insert action
-set backspace=indent,eol,start
-
-" Stop certain movements from always going to the first character of a line.
-" While this behaviour deviates from that of Vi, it does what most users
-" coming from other editors would expect.
-set nostartofline
-
-" Show horizontal cursor line
-set cursorline
-
-" Always display the status line, even if only one window is displayed
-set laststatus=2
-
-" Instead of failing a command because of unsaved changes, instead raise a
-" dialogue asking if you wish to save changed files.
-set confirm
-
-" Use visual bell instead of beeping when doing something wrong
-set visualbell
-
-" And reset the terminal code for the visual bell. If visualbell is set, and
-" this line is also included, vim will neither flash nor beep. If visualbell
-" is unset, this does nothing.
-set t_vb=
-
-" Enable use of the mouse for all modes
-set mouse=a
-
-set cmdheight=2
-
-set number
-
-" Quickly time out on keycodes, but never time out on mappings
-set notimeout ttimeout ttimeoutlen=200
-
-" tab
-set shiftwidth=4
-set softtabstop=4
-set expandtab
-
-set colorcolumn=80
+" auto format on save
+augroup autofmt
+    au BufWrite *.js :Autoformat
+    "au BufWrite *.py :Black
+augroup END
 
 " error highlight whitespace
 augroup whitespace
@@ -130,13 +50,70 @@ augroup whitespace
     autocmd BufWinLeave * call clearmatches()
 augroup END
 
+" only show the cursor line in the active buffer.
+augroup CursorLine
+    autocmd!
+    autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+    autocmd WinLeave * setlocal nocursorline
+augroup END
+
+" wrap long lines in quickfix
+augroup quickfix
+    autocmd!
+    autocmd FileType qf setlocal wrap
+augroup END
+
+" adjust quickfix window height automatically
+augroup quickfix
+    autocmd!
+    autocmd FileType qf call AdjustWindowHeight(3, 10)
+augroup END
+
+function! AdjustWindowHeight(minheight, maxheight)
+    exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
+endfunction
+
+
+" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+" vim settings
+"
+set autoindent
+set backspace=indent,eol,start
+set clipboard=unnamed
+set cmdheight=2
+set colorcolumn=80
+set confirm
+set cursorline
+set expandtab
+set formatoptions+=j
+set hlsearch
+set ignorecase
+set incsearch
+set laststatus=2
+set mouse=a
+set nostartofline
+set notimeout ttimeout ttimeoutlen=200
+set nowrap
+set number
+set path+=**
+set ruler
+set shiftround
+set shiftwidth=4
+set showcmd
+set smartcase
+set softtabstop=4
+set t_vb=
+set visualbell
+set wildmenu
+
 
 " * * * * * * * * * *
 " color
+"
 
 colo thanatos
-
 syntax on
+
 
 " identify the syntax highlighting group used at the cursor
 map <F10> :echo "hi<"
@@ -145,18 +122,25 @@ map <F10> :echo "hi<"
     \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 
+" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+" Mappings
+"
+
+" ctrl-j and ctrl-k to jump through quickfix list
+map <C-j> :cn<CR>
+map <C-k> :cp<CR>
+
 " format json in visual or select mode with  =j
 nmap =j :%!python -m json.tool<CR>
 
-
-" * * * * * * * * * *
-" auto format on save
-au BufWrite *.js :Autoformat
-"au BufWrite *.py :Black
+" search for visual selection
+:vn // y/<C-R>"<CR>
 
 
-" * * * * * * * * * *
+" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 " Leader mappings
+"
+
 let mapleader = ","
 nmap <leader>ne :NERDTreeToggle<cr>
 nmap <leader>nf :NERDTreeFind<cr>
@@ -168,13 +152,10 @@ nnoremap <leader>cf :let @*=expand("%:p")<CR>
 nnoremap <leader><space> :noh<cr>
 nnoremap <leader>s :%s/<C-R><C-W>/
 
-" ctrl-j and ctrl-k to jump through quickfix list
-map <C-j> :cn<CR>
-map <C-k> :cp<CR>
 
-
-" * * * * * * * * * *
+" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 " vim-go
+"
 nmap <leader>gor :GoRun<cr>
 nmap <leader>got :GoTest<cr>
 nmap <leader>goi :GoImport
