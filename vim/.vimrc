@@ -1,31 +1,19 @@
-filetype off                  " required
+call plug#begin('~/.vim/plugged')
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-Plugin 'delimitMate.vim'
-Plugin 'tpope/vim-fugitive'
+Plug 'Raimondi/delimitMate'
+Plug 'tpope/vim-fugitive'
 
 " editor and file exploration
-Plugin 'bufexplorer.zip'
-Plugin 'scrooloose/nerdtree'
+Plug 'jlanzarotta/bufexplorer'
+Plug 'scrooloose/nerdtree'
 
 " syntax
-Plugin 'Chiel92/vim-autoformat'
-Plugin 'fatih/vim-go'
-Plugin 'maxmellon/vim-jsx-pretty'
-Plugin 'psf/black'
+Plug 'Chiel92/vim-autoformat'
+Plug 'fatih/vim-go'
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'psf/black'
 
-call vundle#end()            " required
-filetype plugin indent on    " required
-
-if has('termguicolors')
-    set termguicolors
-endif
+call plug#end()
 
 
 " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -111,9 +99,12 @@ set wildmenu
 " color
 "
 
-colo thanatos
-syntax on
+if has('termguicolors')
+    set termguicolors
+endif
 
+syntax on
+colo thanatos
 
 " identify the syntax highlighting group used at the cursor
 map <F10> :echo "hi<"
@@ -154,8 +145,13 @@ nnoremap <leader>s :%s/<C-R><C-W>/
 
 
 " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-" vim-go
+" Plugin configuration
 "
+
+" black
+let g:black_virtualenv = "~/.vim/plugged/blackvenv"
+
+" vim-go
 nmap <leader>gor :GoRun<cr>
 nmap <leader>got :GoTest<cr>
 nmap <leader>goi :GoImport

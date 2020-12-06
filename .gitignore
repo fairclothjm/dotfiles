@@ -3,5 +3,6 @@
 
 /work
 
-vim/.vim/black/
-vim/.vim/bundle/
+# ignore vim-plug and its plugins
+vim/.vim/autoload/plug.vim
+vim/.vim/plugged/
