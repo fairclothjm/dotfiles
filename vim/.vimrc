@@ -9,7 +9,7 @@ Plug 'scrooloose/nerdtree'
 
 " syntax
 Plug 'Chiel92/vim-autoformat'
-Plug 'fatih/vim-go'
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'psf/black'
 
@@ -95,7 +95,7 @@ set visualbell
 set wildmenu
 
 
-" * * * * * * * * * *
+" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 " color
 "
 
