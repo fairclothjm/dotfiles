@@ -9,9 +9,11 @@ Plug 'scrooloose/nerdtree'
 
 " syntax
 Plug 'Chiel92/vim-autoformat'
-Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'psf/black'
+
+Plug 'axvr/photon.vim'
 
 call plug#end()
 
@@ -136,6 +138,9 @@ nnoremap s "_s
 "
 
 let mapleader = ","
+nmap <leader>w :w<cr>
+nmap <leader>m :make<cr>
+
 nmap <leader>ne :NERDTreeToggle<cr>
 nmap <leader>nf :NERDTreeFind<cr>
 nnoremap <leader>Gr :grep -r <C-R><C-W> **/* <CR>

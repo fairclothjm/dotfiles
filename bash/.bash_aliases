@@ -1,6 +1,7 @@
 # general CLI shortcuts
 alias l="ls -lah"
-alias please='sudo $(history -p !!)'
+alias plz='sudo $(history -p !!)'
+alias ex="exit"
 
 # strip newline from pbcopy
 # usage:
