@@ -138,6 +138,8 @@ nnoremap s "_s
 "
 
 let mapleader = ","
+nmap <leader>dt :windo diffthis<cr>
+nmap <leader>do :diffoff<cr>
 nmap <leader>w :w<cr>
 nmap <leader>m :make<cr>
 
