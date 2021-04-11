@@ -2,6 +2,8 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
 
 " editor and file exploration
 Plug 'jlanzarotta/bufexplorer'
@@ -24,6 +26,7 @@ call plug#end()
 
 " auto format on save
 augroup autofmt
+    autocmd!
     au BufWrite *.js :Autoformat
     "au BufWrite *.py :Black
 augroup END
