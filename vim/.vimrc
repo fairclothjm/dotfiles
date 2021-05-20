@@ -50,16 +50,12 @@ augroup CursorLine
     autocmd WinLeave * setlocal nocursorline
 augroup END
 
-" wrap long lines in quickfix
-augroup quickfix
-    autocmd!
-    autocmd FileType qf setlocal wrap
-augroup END
-
 " adjust quickfix window height automatically
 augroup quickfix
     autocmd!
     autocmd FileType qf call AdjustWindowHeight(3, 10)
+    autocmd FileType qf setlocal wrap
+    autocmd FileType qf setlocal colorcolumn=
 augroup END
 
 function! AdjustWindowHeight(minheight, maxheight)
