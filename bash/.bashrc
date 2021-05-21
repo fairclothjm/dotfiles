@@ -7,6 +7,13 @@ if [ -d /Users/jm/code/dotfiles/work ]; then
     . /Users/jm/code/dotfiles/work/workrc
 fi
 
+if [ "$(uname)" == "Darwin" ]; then
+    # https://news.ycombinator.com/item?id=21317623&p=2
+    if [ "$BASH_SILENCE_DEPRECATION_WARNING" != 1 ]; then
+            export BASH_SILENCE_DEPRECATION_WARNING=1
+    fi
+fi
+
 # colors
 blck=$"\e[1;30m"
 red=$"\e[1;31m"
@@ -66,5 +73,4 @@ export GOPATH=$HOME/go
 export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
 HISTSIZE=500000
 HISTFILESIZE=100000
-
 
