@@ -10,3 +10,4 @@
 	co = checkout
 	st = status
 	d = diff
+	br = branch

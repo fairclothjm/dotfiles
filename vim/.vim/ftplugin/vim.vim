@@ -5,5 +5,5 @@ set sw=2
 " Automatically source .vimrc on save
 augroup Vimrc
     autocmd!
-    autocmd! bufwritepost .vimrc source %
+    autocmd! BufWritePost .vimrc source %
 augroup END

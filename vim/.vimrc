@@ -10,12 +10,10 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'scrooloose/nerdtree'
 
 " syntax
-Plug 'Chiel92/vim-autoformat'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'maxmellon/vim-jsx-pretty'
-Plug 'psf/black'
-
-Plug 'axvr/photon.vim'
+"Plug 'maxmellon/vim-jsx-pretty'
+"Plug 'Chiel92/vim-autoformat'
+"Plug 'psf/black'
 
 call plug#end()
 
@@ -27,7 +25,7 @@ call plug#end()
 " auto format on save
 augroup autofmt
     autocmd!
-    au BufWrite *.js :Autoformat
+    "au BufWrite *.js :Autoformat
     "au BufWrite *.py :Black
 augroup END
 
@@ -36,7 +34,7 @@ augroup whitespace
     autocmd!
     highlight ExtraWhitespace ctermbg=red guibg=darkred
     autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=darkred
-    match ExtraWhitespace /\s\+$/
+    autocmd BufEnter * match ExtraWhitespace /\s\+$/
     autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
     autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
     autocmd InsertLeave * match ExtraWhitespace /\s\+$/
@@ -81,6 +79,7 @@ set incsearch
 set laststatus=2
 set mouse=a
 set nostartofline
+set noswapfile
 set notimeout ttimeout ttimeoutlen=200
 set nowrap
 set number
@@ -142,8 +141,6 @@ nmap <leader>do :diffoff<cr>
 nmap <leader>w :w<cr>
 nmap <leader>m :make<cr>
 
-nmap <leader>ne :NERDTreeToggle<cr>
-nmap <leader>nf :NERDTreeFind<cr>
 nnoremap <leader>Gr :grep -r <C-R><C-W> **/* <CR>
 nnoremap <leader>gr :grep -r --exclude-dir={mocks,} <C-R><C-W>
 " copy current file path
@@ -156,6 +153,10 @@ nnoremap <leader>s :%s/<C-R><C-W>/
 " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 " Plugin configuration
 "
+
+" nerdtree
+nmap <leader>ne :NERDTreeToggle<cr>
+nmap <leader>nf :NERDTreeFind<cr>
 
 " vim-go
 nmap <leader>gor :GoRun<cr>
