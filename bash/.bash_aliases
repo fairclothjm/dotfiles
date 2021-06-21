@@ -19,7 +19,7 @@ alias hide="defaults write com.apple.finder AppleShowAllFiles NO"
 alias lsnet="sudo nmap -sn 192.168.0.0/24"
 
 # git
-alias branchd="git branch | grep -v "master" | xargs git branch -D"
+alias branchd="git branch | grep -v "master" | grep -v "main" | xargs git branch -D"
 alias rmds="find . -name .DS_Store -print0 | xargs -0 git rm -f --ignore-unmatch"
 
 # editors

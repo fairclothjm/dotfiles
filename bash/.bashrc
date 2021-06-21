@@ -1,10 +1,11 @@
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
+    . ~/.bash_functions
 fi
 
-if [ -d /Users/jm/code/dotfiles/work ]; then
-    . /Users/jm/code/dotfiles/work/work_aliases
-    . /Users/jm/code/dotfiles/work/workrc
+if [ -d /Users/$USER/code/dotfiles/work ]; then
+    . /Users/$USER/code/dotfiles/work/work_aliases
+    . /Users/$USER/code/dotfiles/work/workrc
 fi
 
 if [ "$(uname)" == "Darwin" ]; then
@@ -34,18 +35,6 @@ export GREP_COLOR='0;32'
 # enable ls coloring
 export CLICOLOR=1
 export LSCOLORS=gxfxcxdxbxegedabagacad
-
-# git
-parse_git_branch() {
-    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \1/'
-};
-
-function gtag() {
-    git push origin :"$1"
-    git tag -d "$1"
-    git tag "$1"
-    git push origin "$1"
-}
 
 
 if [[ -z "$VIMRUNTIME" ]]; then

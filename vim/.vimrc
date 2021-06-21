@@ -11,6 +11,7 @@ Plug 'scrooloose/nerdtree'
 
 " syntax
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'jvirtanen/vim-hcl'
 "Plug 'maxmellon/vim-jsx-pretty'
 "Plug 'Chiel92/vim-autoformat'
 "Plug 'psf/black'
@@ -174,6 +175,7 @@ let g:go_highlight_operators = 1
 let g:go_metalinter_autosave=0
 let g:go_metalinter_autosave_enabled=['golint', 'errcheck', 'deadcode']
 
+let g:go_test_timeout='25s'
 
 " To see all leader mappings:
 " vim -c 'set t_te=' -c 'set t_ti=' -c 'map ,' -c q | sort
