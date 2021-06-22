@@ -18,7 +18,7 @@ vkill() {
     ps aux | \
         grep "vault server" | \
         grep -v grep | \
-        awk '{print \$2}' | \
+        awk '{print $2}' | \
         xargs kill
 }
 
