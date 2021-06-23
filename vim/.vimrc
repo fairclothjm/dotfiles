@@ -49,19 +49,6 @@ augroup CursorLine
     autocmd WinLeave * setlocal nocursorline
 augroup END
 
-" adjust quickfix window height automatically
-augroup quickfix
-    autocmd!
-    autocmd FileType qf call AdjustWindowHeight(3, 10)
-    autocmd FileType qf setlocal wrap
-    autocmd FileType qf setlocal colorcolumn=
-augroup END
-
-function! AdjustWindowHeight(minheight, maxheight)
-    exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
-endfunction
-
-
 " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 " vim settings
 "

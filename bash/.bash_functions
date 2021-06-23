@@ -13,12 +13,3 @@ gtag() {
     git push origin "$1"
 }
 
-# vault
-vkill() {
-    ps aux | \
-        grep "vault server" | \
-        grep -v grep | \
-        awk '{print $2}' | \
-        xargs kill
-}
-

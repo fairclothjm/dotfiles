@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# aliases
+
+# run vault in dev mode
+alias vdev='vault server -dev -log-level="debug" -dev-ha -dev-transactional -dev-root-token-id=root'
+
+# * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+# functions
+
+vlocal() {
+  export VAULT_DEV_ROOT_TOKEN_ID="root"
+  export VAULT_TOKEN="root"
+  export VAULT_ADDR="http://127.0.0.1:8200"
+}
+
+# kill vault proccess
+vkill() {
+  ps aux | \
+    grep "vault server" | \
+    grep -v grep | \
+    awk '{print $2}' | \
+    xargs kill
+  }
+
