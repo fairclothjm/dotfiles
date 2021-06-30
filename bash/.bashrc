@@ -60,6 +60,6 @@ export GOPATH=$HOME/go
 
 # history
 export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
-HISTSIZE=500000
-HISTFILESIZE=100000
+export HISTSIZE=2000000
+export HISTFILESIZE=30000000
 
