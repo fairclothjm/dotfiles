@@ -1,6 +1,7 @@
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
     . ~/.bash_functions
+    . ~/.vaultrc
 fi
 
 if [ -d /Users/$USER/code/dotfiles/work ]; then
@@ -45,7 +46,7 @@ fi
 
 # bash
 if [[ "$TERM" =~ 256color ]]; then
-    PS1="\[${light_gray}\]\w\[${med_gray}\]\$(parse_git_branch)";
+    PS1="\[${light_gray}\]\w \[${med_gray}\]\$(gbranch)";
     PS1+="\[${grn}\]${vim_shell}";
     PS1+="\[${dark_gray}\] $ \[${end}\]";
     PS1+="\[$(tput sgr0)\]";

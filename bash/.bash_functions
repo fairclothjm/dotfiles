@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
 # git
-parse_git_branch() {
+gbranch() {
     git branch 2> /dev/null | \
-        sed -e '/^[^*]/d' -e 's/* \(.*\)/ \1/'
+        sed -e '/^[^*]/d' -e 's/* \(.*\)/ \1/' | \
+        tr -d '[:space:]'
 };
 
 gtag() {

@@ -23,6 +23,16 @@ call plug#end()
 " autocommands
 "
 
+" adjust quickfix window height automatically
+augroup quickfix
+    autocmd!
+    autocmd FileType qf call AdjustWindowHeight(3, 10)
+augroup END
+
+function! AdjustWindowHeight(minheight, maxheight)
+    exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
+endfunction
+
 " auto format on save
 augroup autofmt
     autocmd!
@@ -129,10 +139,15 @@ nmap <leader>do :diffoff<cr>
 nmap <leader>w :w<cr>
 nmap <leader>m :make<cr>
 
+" file searching
 nnoremap <leader>Gr :grep -r <C-R><C-W> **/* <CR>
 nnoremap <leader>gr :grep -r --exclude-dir={mocks,} <C-R><C-W>
+
 " copy current file path
 nnoremap <leader>cf :let @*=expand("%:p")<CR>
+" open current file in Chrome Browser
+nnoremap <leader>vf :! open -a "Google Chrome" %<CR>
+
 " clear hlsearch
 nnoremap <leader><space> :noh<cr>
 nnoremap <leader>s :%s/<C-R><C-W>/

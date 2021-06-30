@@ -3,6 +3,10 @@ alias l="ls -lah"
 alias plz='sudo $(history -p !!)'
 alias ex="exit"
 
+# navigation
+alias cddot="cd ~/code/dotfiles"
+alias cdnot="cd ~/notes"
+
 # strip newline from pbcopy
 # usage:
 #   echo file.txt | copy
