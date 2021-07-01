@@ -15,6 +15,18 @@ vlocal() {
   export VAULT_ADDR="http://127.0.0.1:8200"
 }
 
+vunset() {
+  unset VAULT_DEV_ROOT_TOKEN_ID
+  unset VAULT_TOKEN
+  unset VAULT_ADDR
+}
+
+vv() {
+  echo "VAULT_DEV_ROOT_TOKEN_ID: $VAULT_DEV_ROOT_TOKEN_ID"
+  echo "VAULT_TOKEN: $VAULT_TOKEN"
+  echo "VAULT_ADDR: $VAULT_ADDR"
+}
+
 # kill vault proccess
 vkill() {
   ps aux | \
@@ -22,5 +34,5 @@ vkill() {
     grep -v grep | \
     awk '{print $2}' | \
     xargs kill
-  }
+}
 

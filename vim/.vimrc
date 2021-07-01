@@ -23,16 +23,6 @@ call plug#end()
 " autocommands
 "
 
-" adjust quickfix window height automatically
-augroup quickfix
-    autocmd!
-    autocmd FileType qf call AdjustWindowHeight(3, 10)
-augroup END
-
-function! AdjustWindowHeight(minheight, maxheight)
-    exe max([min([line("$"), a:maxheight]), a:minheight]) . "wincmd _"
-endfunction
-
 " auto format on save
 augroup autofmt
     autocmd!
