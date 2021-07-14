@@ -34,9 +34,9 @@ vunset() {
 
 # print vault env vars and processes
 vv() {
-  echo "VAULT_DEV_ROOT_TOKEN_ID: $VAULT_DEV_ROOT_TOKEN_ID"
-  echo "VAULT_TOKEN: $VAULT_TOKEN"
-  echo "VAULT_ADDR: $VAULT_ADDR"
+  echo "VAULT_DEV_ROOT_TOKEN_ID=$VAULT_DEV_ROOT_TOKEN_ID"
+  echo "VAULT_TOKEN=$VAULT_TOKEN"
+  echo "VAULT_ADDR=$VAULT_ADDR"
   output=$(ps aux | awk 'NR==1 || /vault server/' | grep -v awk)
   readarray -t lines <<<"$output"
   if [[ -n ${lines[1]} ]]; then

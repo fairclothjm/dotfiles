@@ -167,6 +167,9 @@ let g:go_highlight_operators = 1
 let g:go_metalinter_autosave=0
 let g:go_metalinter_autosave_enabled=['golint', 'errcheck', 'deadcode']
 
+let g:go_fmt_command="gopls"
+let g:go_gopls_gofumpt=1
+
 let g:go_test_timeout='25s'
 
 " To see all leader mappings:
