@@ -1,4 +1,4 @@
-if [ -f ~/.bash_aliases ]; then
+if [ -d /Users/$USER/code/dotfiles/bash ]; then
     . ~/.bash_aliases
     . ~/.bash_functions
     . ~/.vaultrc
@@ -12,7 +12,7 @@ fi
 if [ "$(uname)" == "Darwin" ]; then
     # https://news.ycombinator.com/item?id=21317623&p=2
     if [ "$BASH_SILENCE_DEPRECATION_WARNING" != 1 ]; then
-            export BASH_SILENCE_DEPRECATION_WARNING=1
+        export BASH_SILENCE_DEPRECATION_WARNING=1
     fi
 fi
 
