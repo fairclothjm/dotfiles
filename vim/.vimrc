@@ -142,6 +142,8 @@ nnoremap <leader>vf :! open -a "Google Chrome" %<CR>
 nnoremap <leader><space> :noh<cr>
 nnoremap <leader>s :%s/<C-R><C-W>/
 
+" insert date
+nnoremap <leader>date "=strftime("%F")<CR>P
 
 " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 " Plugin configuration
