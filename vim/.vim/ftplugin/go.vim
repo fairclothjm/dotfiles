@@ -1,4 +1,3 @@
-
 " vim-go
 nmap <leader>goa :GoAlternate<cr>
 nmap <leader>gor :GoRun<cr>
@@ -22,3 +21,6 @@ let g:go_gopls_gofumpt=1
 
 let g:go_test_timeout='25s'
 
+" abbreviations
+iabbrev <buffer> iferr <ESC>:.-1read ~/.vim/templates/go/err.go<CR>2=<CR>o
+iabbrev <buffer> fmain <ESC>:0read ~/.vim/templates/go/main.go<CR>2jo
