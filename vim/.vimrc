@@ -23,12 +23,17 @@ call plug#end()
 " autocommands
 "
 
-" auto format on save
-augroup autofmt
-    autocmd!
-    "au BufWrite *.js :Autoformat
-    "au BufWrite *.py :Black
+augroup skeleton
+  autocmd!
+  autocmd BufNewFile *.sh 0r ~/.vim/templates/bash/skeleton.sh
 augroup END
+
+" auto format on save
+" augroup autofmt
+"     autocmd!
+"     au BufWrite *.js :Autoformat
+"     au BufWrite *.py :Black
+" augroup END
 
 " error highlight whitespace
 augroup whitespace
@@ -130,8 +135,8 @@ nmap <leader>w :w<cr>
 nmap <leader>m :make<cr>
 
 " file searching
-nnoremap <leader>Gr :grep -r <C-R><C-W> **/* <CR>
-nnoremap <leader>gr :grep -r --exclude-dir={mocks,} <C-R><C-W>
+nnoremap <leader>Gr :grep -r "<C-R><C-W>" **/* <CR>
+nnoremap <leader>gr :grep -r --exclude-dir={mocks,} "<C-R><C-W>"
 
 " copy current file path
 nnoremap <leader>cf :let @*=expand("%:p")<CR>
