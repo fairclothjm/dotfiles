@@ -9,7 +9,7 @@ Sync with the home directory:
 stow --target ~ bash git vim
 ```
 
-Then install vim-plug:
+Then install custom executables and vim-plug:
 ```
 ./install.sh
 ```
