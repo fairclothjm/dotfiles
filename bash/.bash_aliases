@@ -7,6 +7,7 @@ alias ex="exit"
 # navigation
 alias cddot="cd ~/code/dotfiles"
 alias cdnot="cd ~/notes"
+alias cdtmp="cd /tmp"
 
 # strip newline from pbcopy
 # usage:
