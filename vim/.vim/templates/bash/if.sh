@@ -1,2 +1,2 @@
-if [[ ]]; then
+if [[]]; then
 fi
