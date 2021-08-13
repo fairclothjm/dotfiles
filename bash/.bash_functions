@@ -17,6 +17,7 @@ got() {
 
   go test -v --run "$@" > $logfile
   grep "FAIL:\|PASS:" $logfile
+  tail -n 1 $logfile
 }
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
