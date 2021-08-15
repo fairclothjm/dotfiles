@@ -130,10 +130,10 @@ nnoremap s "_s
 "
 
 let mapleader = ","
-nmap <leader>dt :windo diffthis<cr>
-nmap <leader>do :diffoff<cr>
-nmap <leader>w :w<cr>
-nmap <leader>m :make<cr>
+nmap <leader>dt :windo diffthis<CR>
+nmap <leader>do :diffoff<CR>
+nmap <leader>w :w<CR>
+nmap <leader>m :make<CR>
 
 " file searching
 nnoremap <leader>Gr :grep -r "<C-R><C-W>" **/* <CR>
@@ -145,8 +145,10 @@ nnoremap <leader>cf :let @*=expand("%:p")<CR>
 nnoremap <leader>vf :! open -a "Google Chrome" %<CR>
 
 " clear hlsearch
-nnoremap <leader><space> :noh<cr>
-nnoremap <leader>s :%s/<C-R><C-W>/
+nnoremap <leader><space> :noh<CR>
+" search and replace word under cursor
+nnoremap <leader>sr :%s/<C-R><C-W>/
+
 
 " insert date
 nnoremap <leader>date "=strftime("%F")<CR>P
@@ -160,8 +162,8 @@ nnoremap <leader>` i ```<CR>```<ESC>O
 "
 
 " nerdtree
-nmap <leader>ne :NERDTreeToggle<cr>
-nmap <leader>nf :NERDTreeFind<cr>
+nmap <leader>ne :NERDTreeToggle<CR>
+nmap <leader>nf :NERDTreeFind<CR>
 
 " To see all leader mappings:
 " vim -c 'set t_te=' -c 'set t_ti=' -c 'map ,' -c q | sort
