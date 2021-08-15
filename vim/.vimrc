@@ -4,6 +4,7 @@ Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-apathy'
 
 " editor and file exploration
 Plug 'jlanzarotta/bufexplorer'
