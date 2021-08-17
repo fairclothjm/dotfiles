@@ -121,6 +121,10 @@ nmap =j :%!python -m json.tool<CR>
 " search for visual selection
 :vn // y/<C-R>"<CR>
 
+" Swap ` and ' for marks; go to line and col of mark with '
+nnoremap ' `
+nnoremap ` '
+
 " do NOT yank with x/s
 nnoremap x "_x
 nnoremap s "_s
