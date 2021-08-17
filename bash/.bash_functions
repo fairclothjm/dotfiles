@@ -10,10 +10,19 @@
 got() {
   local logfile=/tmp/gotest.log
 
-  if [[ "$@" == "log" ]]; then
-    vim $logfile
-    return 0
-  fi
+  case "$1" in
+    -h|h|--help|help)
+      echo "usage: got [<command>] [<args>]"
+      echo -e "\tgot TestMyFunc"
+      echo -e "\tgot log"
+      echo -e "\nA wrapper for \"go test\""
+      return 0
+      ;;
+    -l|l|--log|log)
+      vim $logfile
+      return 0
+      ;;
+  esac
 
   go test -v --run "$@" > $logfile
   grep "FAIL:\|PASS:" $logfile
