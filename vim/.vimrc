@@ -125,6 +125,15 @@ nmap =j :%!python -m json.tool<CR>
 nnoremap x "_x
 nnoremap s "_s
 
+" indent blocks without losing the selection
+xnoremap < <gv
+xnoremap > >gv
+
+" make Y act like D and C; yank from cursor to eol
+nnoremap Y y$
+
+command! -complete=filetype -nargs=? EditFtplugin execute 'edit ~/.vim/ftplugin/' . (empty(expand('<args>')) ? &filetype : expand('<args>')) . '.vim'
+
 " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 " Leader mappings
 "
