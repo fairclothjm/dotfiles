@@ -1,9 +1,10 @@
 " vim-go
-nmap <leader>goa :GoAlternate<cr>
-nmap <leader>gor :GoRun<cr>
-nmap <leader>goR :GoRun %<cr>
-nmap <leader>got :GoTest<cr>
+nmap <leader>goa :GoAlternate<CR>
+nmap <leader>gor :GoRun<CR>
+nmap <leader>goR :GoRun %<CR>
+nmap <leader>got :GoTest<CR>
 nmap <leader>goi :GoImport
+nmap <leader>gop :tabnew /Users/$USER/code/go/test/main.go<CR>
 
 let g:go_list_type = "quickfix"         " do not use location list
 let g:go_template_autocreate = 0        " disable vim-go template

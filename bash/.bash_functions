@@ -32,9 +32,11 @@ got() {
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # git
 gbranch() {
+  # use awk to trim leading and trailing whitespace
+  # useful when in detached head state
   git branch 2> /dev/null | \
     sed -e '/^[^*]/d' -e 's/* \(.*\)/ \1/' | \
-    tr -d '[:space:]'
+    awk '{$1=$1;print}'
 }
 
 gtag() {

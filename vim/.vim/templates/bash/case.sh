@@ -1,4 +1,4 @@
-case $COUNTRY in
+case "$1" in
   Lithuania)
     echo -n "Lithuanian"
     ;;
