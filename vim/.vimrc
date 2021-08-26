@@ -168,7 +168,7 @@ nnoremap <leader>date "=strftime("%F")<CR>P
 
 " insert shell skeleton
 nnoremap <leader>sh :0r ~/.vim/templates/bash/skeleton.sh<CR>G
-nnoremap <leader>` i ```<CR>```<ESC>O
+nnoremap <leader>` i```<CR>```<ESC>O
 
 " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 " Plugin configuration

@@ -25,4 +25,4 @@ let g:go_test_timeout='25s'
 " abbreviations
 iabbrev <buffer> iferr <ESC>:.-1read ~/.vim/templates/go/err.go<CR>2=<CR>o
 iabbrev <buffer> fmain <ESC>:0read ~/.vim/templates/go/main.go<CR>2jo
-iabbrev <buffer> switch <ESC>:.-1read ~/.vim/templates/go/switch.go<CR>3=<CR>j2Wi
+iabbrev <buffer> gswitch <ESC>:.-1read ~/.vim/templates/go/switch.go<CR>3=<CR>j2Wi

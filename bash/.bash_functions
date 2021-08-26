@@ -7,19 +7,33 @@
 # usage:
 #   got TestMyFunc
 #   got log
+#   got save
 got() {
   local logfile=/tmp/gotest.log
+  local filepath
 
   case "$1" in
     -h|h|--help|help)
       echo "usage: got [<command>] [<args>]"
       echo -e "\tgot TestMyFunc"
       echo -e "\tgot log"
+      echo -e "\tgot save [FILENAME]"
       echo -e "\nA wrapper for \"go test\""
       return 0
       ;;
     -l|l|--log|log)
       vim $logfile
+      return 0
+      ;;
+    -s|s|--save|save)
+      if [[ -z "$2" ]]; then
+        filename="gotest-$(date +"%m-%d-%Y-%H%M%S").log"
+      else
+        filename="$2.log"
+      fi
+
+      filepath="/tmp/$filename"
+      cp "$logfile" "$filepath" && echo "got: saved log at $filepath"
       return 0
       ;;
   esac
