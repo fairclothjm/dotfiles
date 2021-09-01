@@ -13,19 +13,25 @@ got() {
   local filepath
 
   case "$1" in
-    -h|h|--help|help)
+    h|help)
       echo "usage: got [<command>] [<args>]"
       echo -e "\tgot TestMyFunc"
       echo -e "\tgot log"
       echo -e "\tgot save [FILENAME]"
+      echo -e "\tgot flaky TestMyFunc"
       echo -e "\nA wrapper for \"go test\""
       return 0
       ;;
-    -l|l|--log|log)
+    f|flaky)
+      shift
+      for i in {1..10}; do got "$@" && got save "gotest-flaky-$i"; go clean -testcache; done
+      return 0
+      ;;
+    l|log)
       vim $logfile
       return 0
       ;;
-    -s|s|--save|save)
+    s|save)
       if [[ -z "$2" ]]; then
         filename="gotest-$(date +"%m-%d-%Y-%H%M%S").log"
       else
@@ -39,7 +45,8 @@ got() {
   esac
 
   go test -v --run "$@" > $logfile
-  grep "FAIL:\|PASS:" $logfile
+  grep "PASS:" $logfile
+  GREP_COLOR='0;31' grep "FAIL:" $logfile
   tail -n 1 $logfile
 }
 
