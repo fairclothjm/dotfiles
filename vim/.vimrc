@@ -20,7 +20,7 @@ Plug 'jvirtanen/vim-hcl'
 call plug#end()
 
 
-" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+" # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 " autocommands
 "
 
@@ -55,7 +55,7 @@ augroup CursorLine
     autocmd WinLeave * setlocal nocursorline
 augroup END
 
-" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+" # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 " vim settings
 "
 set autoindent
@@ -86,10 +86,18 @@ set smartcase
 set softtabstop=4
 set t_vb=
 set visualbell
+set wildignore+=*/node_modules/*,*/__pycache__/,*/venv/*,*/.venv/*,.git,.git/*
 set wildmenu
 
+" set grepprg as RipGrep, fallback to grep
+if executable("rg")
+    set grepprg=rg\ --vimgrep\ --smart-case
+    set grepformat=%f:%l:%c:%m,%f:%l:%m
+else
+    let &grepprg='grep -n -r --exclude=' . shellescape(&wildignore) . ' $* .'
+endif
 
-" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+" # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 " color
 "
 
@@ -107,7 +115,7 @@ map <F10> :echo "hi<"
     \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 
-" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+" # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 " Mappings
 "
 
@@ -138,7 +146,7 @@ nnoremap Y y$
 
 command! -complete=filetype -nargs=? EditFtplugin execute 'edit ~/.vim/ftplugin/' . (empty(expand('<args>')) ? &filetype : expand('<args>')) . '.vim'
 
-" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+" # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 " Leader mappings
 "
 
@@ -170,7 +178,7 @@ nnoremap <leader>date "=strftime("%F")<CR>P
 nnoremap <leader>sh :0r ~/.vim/templates/bash/skeleton.sh<CR>G
 nnoremap <leader>` i```<CR>```<ESC>O
 
-" * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+" # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 " Plugin configuration
 "
 
