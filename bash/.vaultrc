@@ -6,6 +6,7 @@
 alias vdlv="dlv --listen=:2345 --headless=true --api-version=2 exec ./pkg/darwin_amd64/vault -- server -dev -log-level=debug -dev-root-token-id=root"
 alias vdebug='GCFLAGS="all=-N -l" make dev'
 alias vcluster="vault server -dev -dev-root-token-id=root -log-level=debug -dev-three-node"
+alias vaudit="vault audit enable file file_path=/tmp/vault_audit.log"
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Functions

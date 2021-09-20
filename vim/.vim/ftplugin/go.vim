@@ -1,5 +1,6 @@
 " vim-go
 nmap <leader>goa :GoAlternate<CR>
+nmap <leader>gof :GoReferrers<CR>
 nmap <leader>gor :GoRun<CR>
 nmap <leader>goR :GoRun %<CR>
 nmap <leader>got :GoTest<CR>
