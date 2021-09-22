@@ -44,7 +44,12 @@ got() {
       ;;
   esac
 
-  go test -v --run "$@" > $logfile
+  if [[ "$@" =~ "Test" ]]; then
+    go test -v --run "$@" > $logfile
+  else
+    go test -v "$@" > $logfile
+  fi
+
   grep "PASS:" $logfile
   GREP_COLOR='0;31' grep "FAIL:" $logfile
   tail -n 1 $logfile
