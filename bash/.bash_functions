@@ -50,13 +50,25 @@ got() {
     go test -v "$@" > $logfile
   fi
 
-  grep "PASS:" $logfile
+  grep -v "    --- PASS:" $logfile | grep "PASS:"
   GREP_COLOR='0;31' grep "FAIL:" $logfile
   tail -n 1 $logfile
 }
 
+# compile and execute dlv debugger
+# usage: gotd TestFoo
+gotd() {
+  if [[ "$@" =~ "Test" ]]; then
+    dlv test -- -test.run "$@"
+  else
+    go test -c -o debug.test
+    dlv exec debug.test
+  fi
+}
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # git
+
 gbranch() {
   # use awk to trim leading and trailing whitespace
   # useful when in detached head state

@@ -89,6 +89,14 @@ set visualbell
 set wildignore+=*/node_modules/*,*/__pycache__/,*/venv/*,*/.venv/*,.git,.git/*
 set wildmenu
 
+" keep undo history across sessions by storing it in a file
+if has('persistent_undo')
+    let undopath = expand('/tmp/vimundo')
+    :silent call system('mkdir -p ' . undopath)
+    let &undodir=undopath
+    set undofile
+endif
+
 " set grepprg as RipGrep, fallback to grep
 if executable("rg")
     set grepprg=rg\ --vimgrep\ --smart-case
