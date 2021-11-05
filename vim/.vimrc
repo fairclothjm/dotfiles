@@ -69,6 +69,7 @@ set expandtab
 set formatoptions+=j
 set hlsearch
 set ignorecase
+set iskeyword+=-
 set incsearch
 set laststatus=2
 set mouse=a

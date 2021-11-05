@@ -3,10 +3,15 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Aliases
 
-alias vdlv="dlv --listen=:2345 --headless=true --api-version=2 exec ./pkg/darwin_amd64/vault -- server -dev -log-level=debug -dev-root-token-id=root"
-alias vdebug='GCFLAGS="all=-N -l" make dev'
-alias vcluster="vault server -dev -dev-root-token-id=root -log-level=debug -dev-three-node"
+# memory is a cold mistress
+alias valias="grep 'alias\|v\w*(' /Users/$USER/code/dotfiles/bash/.vaultrc"
+
 alias vaudit="vault audit enable file file_path=/tmp/vault_audit.log"
+alias vdebug='GCFLAGS="all=-N -l" make dev'
+alias vdlv="dlv --listen=:2345 --headless=true --api-version=2 exec ./pkg/darwin_amd64/vault -- server -dev -log-level=debug -dev-root-token-id=root"
+alias vedit="vim /Users/$USER/code/dotfiles/bash/.vaultrc"
+alias vserve="vault server -dev -dev-root-token-id=root -log-level=trace -dev-plugin-dir=/Users/$USER/dev/plugins"
+alias vservecluster="vault server -dev -dev-root-token-id=root -log-level=debug -dev-three-node"
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Functions
@@ -20,6 +25,7 @@ vdev() {
     -dev-ha \
     -dev-transactional \
     -dev-root-token-id=root \
+    -dev-plugin-dir=/Users/$USER/dev/plugins \
     "$@"
 }
 
@@ -27,6 +33,7 @@ vset() {
   export VAULT_DEV_ROOT_TOKEN_ID="root"
   export VAULT_TOKEN="root"
   export VAULT_ADDR="http://127.0.0.1:8200"
+  export VAULT_LICENSE_PATH="/Users/$USER/dev/license/vault.hclic"
 }
 
 vunset() {
@@ -34,6 +41,7 @@ vunset() {
   unset VAULT_TOKEN
   unset VAULT_ADDR
   unset VAULT_CACERT
+  unset VAULT_LICENSE_PATH
 }
 
 # print vault env vars and processes
@@ -42,6 +50,8 @@ vv() {
   echo "VAULT_TOKEN=$VAULT_TOKEN"
   echo "VAULT_ADDR=$VAULT_ADDR"
   echo "VAULT_CACERT=$VAULT_CACERT"
+  echo "VAULT_LICENSE_PATH=$VAULT_LICENSE_PATH"
+
   output=$(ps aux | awk 'NR==1 || /vault server/' | grep -v awk)
   readarray -t lines <<<"$output"
   if [[ -n ${lines[1]} ]]; then

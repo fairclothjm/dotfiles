@@ -17,7 +17,7 @@ got() {
       echo "usage: got [<command>] [<args>]"
       echo -e "\tgot TestMyFunc"
       echo -e "\tgot log"
-      echo -e "\tgot save [FILENAME]"
+      echo -e "\tgot save [FILENAME] - will be save to /tmp"
       echo -e "\tgot flaky TestMyFunc"
       echo -e "\nA wrapper for \"go test\""
       return 0
@@ -58,6 +58,12 @@ got() {
 # compile and execute dlv debugger
 # usage: gotd TestFoo
 gotd() {
+  if [[ "$@" == "" ]]; then
+      echo "usage: gotd [<args>]"
+      echo -e "\tgotd TestMyFunc"
+      return 0
+  fi
+
   if [[ "$@" =~ "Test" ]]; then
     dlv test -- -test.run "$@"
   else
