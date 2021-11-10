@@ -13,6 +13,7 @@ Plug 'scrooloose/nerdtree'
 " syntax
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'jvirtanen/vim-hcl'
+
 "Plug 'maxmellon/vim-jsx-pretty'
 "Plug 'Chiel92/vim-autoformat'
 "Plug 'psf/black'

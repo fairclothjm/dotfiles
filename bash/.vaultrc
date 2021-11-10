@@ -42,6 +42,7 @@ vunset() {
   unset VAULT_ADDR
   unset VAULT_CACERT
   unset VAULT_LICENSE_PATH
+  unset VAULT_NAMESPACE
 }
 
 # print vault env vars and processes
@@ -51,8 +52,9 @@ vv() {
   echo "VAULT_ADDR=$VAULT_ADDR"
   echo "VAULT_CACERT=$VAULT_CACERT"
   echo "VAULT_LICENSE_PATH=$VAULT_LICENSE_PATH"
+  echo "VAULT_NAMESPACE=$VAULT_NAMESPACE"
 
-  output=$(ps aux | awk 'NR==1 || /vault server/' | grep -v awk)
+  local output=$(ps aux | awk 'NR==1 || /vault server/' | grep -v awk)
   readarray -t lines <<<"$output"
   if [[ -n ${lines[1]} ]]; then
     echo
@@ -63,8 +65,7 @@ vv() {
 # kill vault proccess
 vkill() {
   ps aux | \
-    grep "vault server" | \
-    grep -v grep | \
+    pgrep "vault server" | \
     awk '{print $2}' | \
     xargs kill -9
 }
