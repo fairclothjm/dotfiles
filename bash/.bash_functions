@@ -50,6 +50,7 @@ got() {
     go test -v "$@" > $logfile
   fi
 
+  echo "$(date)"
   grep -v "    --- PASS:" $logfile | grep "PASS:"
   GREP_COLOR='0;31' grep "FAIL:" $logfile
   tail -n 1 $logfile

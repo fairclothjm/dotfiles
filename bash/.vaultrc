@@ -10,13 +10,12 @@ alias vaudit="vault audit enable file file_path=/tmp/vault_audit.log"
 alias vdebug='GCFLAGS="all=-N -l" make dev'
 alias vdlv="dlv --listen=:2345 --headless=true --api-version=2 exec ./pkg/darwin_amd64/vault -- server -dev -log-level=debug -dev-root-token-id=root"
 alias vedit="vim /Users/$USER/code/dotfiles/bash/.vaultrc"
-alias vserve="vault server -dev -dev-root-token-id=root -log-level=trace -dev-plugin-dir=/Users/$USER/dev/plugins"
 alias vservecluster="vault server -dev -dev-root-token-id=root -log-level=debug -dev-three-node"
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Functions
 
-# run vault in dev mode
+# run dev build of vault in dev mode
 # optionally pass in "&" to run in the background
 vdev() {
   ./pkg/darwin_amd64/vault server \
@@ -29,11 +28,23 @@ vdev() {
     "$@"
 }
 
+# run vault in dev mode
+# optionally pass in "&" to run in the background
+vserve() {
+  vault server \
+    -dev \
+    -dev-root-token-id=root \
+    -log-level=trace \
+    -dev-plugin-dir=/Users/$USER/dev/plugins \
+    "$@"
+}
+
 vset() {
   export VAULT_DEV_ROOT_TOKEN_ID="root"
   export VAULT_TOKEN="root"
   export VAULT_ADDR="http://127.0.0.1:8200"
   export VAULT_LICENSE_PATH="/Users/$USER/dev/license/vault.hclic"
+  export VAULT_LICENSE="$(cat /Users/$USER/dev/license/vault.hclic)"
 }
 
 vunset() {
@@ -41,6 +52,7 @@ vunset() {
   unset VAULT_TOKEN
   unset VAULT_ADDR
   unset VAULT_CACERT
+  unset VAULT_LICENSE
   unset VAULT_LICENSE_PATH
   unset VAULT_NAMESPACE
 }
@@ -51,6 +63,7 @@ vv() {
   echo "VAULT_TOKEN=$VAULT_TOKEN"
   echo "VAULT_ADDR=$VAULT_ADDR"
   echo "VAULT_CACERT=$VAULT_CACERT"
+  echo "VAULT_LICENSE=$VAULT_LICENSE"
   echo "VAULT_LICENSE_PATH=$VAULT_LICENSE_PATH"
   echo "VAULT_NAMESPACE=$VAULT_NAMESPACE"
 
@@ -62,11 +75,33 @@ vv() {
   fi
 }
 
-# kill vault proccess
-vkill() {
-  ps aux | \
-    pgrep "vault server" | \
-    awk '{print $2}' | \
-    xargs kill -9
-}
+# vault backport
+#   usage: vbp 1.9 12345 dfhafefdfda
+vbp() {
+  local version="$1"
+  local issue="$2"
+  local sha="$3"
 
+  [[ ${version:?} ]]
+  [[ ${issue:?} ]]
+  [[ ${sha:?} ]]
+
+  local bp_branch=backport-pr-${issue}-${version}.x
+  local rel_branch=release/${version}.x
+
+  git checkout ${rel_branch}
+  git pull
+  git checkout -b ${bp_branch}
+  git cherry-pick ${sha}
+
+  echo
+  echo "Backports https://github.com/hashicorp/vault/pull/${issue} into ${rel_branch}"
+  echo
+  echo "Steps:"
+  echo '```'
+  echo "git checkout ${rel_branch}"
+  echo "git checkout -b ${bp_branch}"
+  echo "git cherry-pick ${sha}"
+  echo '```'
+  echo
+}
