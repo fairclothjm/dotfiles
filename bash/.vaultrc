@@ -78,6 +78,15 @@ vv() {
 # vault backport
 #   usage: vbp 1.9 12345 dfhafefdfda
 vbp() {
+  if [[ "$@" == "" ]]; then
+    echo "usage: vbp VERSION PR_NUM SHA"
+    echo
+    echo "example:"
+    echo -e "\tvbp 1.9 12345 dfhafefdfda"
+    echo
+    return 0
+  fi
+
   local version="$1"
   local issue="$2"
   local sha="$3"

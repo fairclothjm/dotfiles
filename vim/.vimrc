@@ -6,6 +6,8 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-apathy'
 
+Plug 'AndrewRadev/splitjoin.vim'
+
 " editor and file exploration
 Plug 'jlanzarotta/bufexplorer'
 Plug 'scrooloose/nerdtree'
@@ -13,6 +15,8 @@ Plug 'scrooloose/nerdtree'
 " syntax
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'jvirtanen/vim-hcl'
+
+Plug 'arcticicestudio/nord-vim'
 
 "Plug 'maxmellon/vim-jsx-pretty'
 "Plug 'Chiel92/vim-autoformat'
@@ -54,6 +58,11 @@ augroup CursorLine
     autocmd!
     autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
     autocmd WinLeave * setlocal nocursorline
+augroup END
+
+augroup TerminalWin
+    autocmd!
+    " autocmd TerminalWinOpen * setlocal bufhidden=hide
 augroup END
 
 " # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -115,8 +124,15 @@ if has('termguicolors')
     set termguicolors
 endif
 
+augroup nord-theme-overrides
+  autocmd!
+  " use a darker background color for nord vim
+  autocmd ColorScheme nord highlight Normal ctermbg=NONE guibg=#1c1e24
+augroup END
+
 syntax on
-colo thanatos
+set background=dark
+colo nord
 
 " identify the syntax highlighting group used at the cursor
 map <F10> :echo "hi<"
