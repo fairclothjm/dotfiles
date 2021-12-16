@@ -29,7 +29,7 @@ call plug#end()
 " autocommands
 "
 
-augroup skeleton
+augroup Skeleton
   autocmd!
   autocmd BufNewFile *.sh 0r ~/.vim/templates/bash/skeleton.sh
 augroup END
@@ -42,7 +42,7 @@ augroup END
 " augroup END
 
 " error highlight whitespace
-augroup whitespace
+augroup Whitespace
     autocmd!
     highlight ExtraWhitespace ctermbg=red guibg=darkred
     autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=darkred
@@ -60,11 +60,6 @@ augroup CursorLine
     autocmd WinLeave * setlocal nocursorline
 augroup END
 
-augroup TerminalWin
-    autocmd!
-    " autocmd TerminalWinOpen * setlocal bufhidden=hide
-augroup END
-
 " # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 " vim settings
 "
@@ -79,8 +74,8 @@ set expandtab
 set formatoptions+=j
 set hlsearch
 set ignorecase
-set iskeyword+=-
 set incsearch
+set iskeyword+=-
 set laststatus=2
 set mouse=a
 set nostartofline
@@ -95,6 +90,8 @@ set shiftwidth=4
 set showcmd
 set smartcase
 set softtabstop=4
+set splitbelow
+set splitright
 set t_vb=
 set visualbell
 set wildignore+=*/node_modules/*,*/__pycache__/,*/venv/*,*/.venv/*,.git,.git/*
@@ -170,21 +167,29 @@ xnoremap > >gv
 " make Y act like D and C; yank from cursor to eol
 nnoremap Y y$
 
-command! -complete=filetype -nargs=? EditFtplugin execute 'edit ~/.vim/ftplugin/' . (empty(expand('<args>')) ? &filetype : expand('<args>')) . '.vim'
+if !exists(":DiffOrig")
+  command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+		  \ | wincmd p | diffthis
+endif
+
+if !exists(":EditFtplugin")
+    command! -complete=filetype -nargs=? EditFtplugin execute 'edit ~/.vim/ftplugin/'
+                \. (empty(expand('<args>')) ? &filetype : expand('<args>')) . '.vim'
+endif
 
 " # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 " Leader mappings
 "
 
 let mapleader = ","
+nmap <leader>vv :edit $MYVIMRC<CR>
 nmap <leader>dt :windo diffthis<CR>
 nmap <leader>do :diffoff<CR>
 nmap <leader>w :w<CR>
 nmap <leader>m :make<CR>
 
 " file searching
-nnoremap <leader>Gr :grep -r "<C-R><C-W>" **/* <CR>
-nnoremap <leader>gr :grep -r --exclude-dir={mocks,} "<C-R><C-W>"
+nnoremap <leader>gg :grep "<C-R><C-W>" **/* <CR>
 
 " copy current file path
 nnoremap <leader>cf :let @*=expand("%:p")<CR>

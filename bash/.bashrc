@@ -1,12 +1,12 @@
-if [ -d /Users/$USER/code/dotfiles/bash ]; then
+if [ -d $HOME/code/dotfiles/bash ]; then
     . ~/.bash_aliases
     . ~/.bash_functions
     . ~/.vaultrc
 fi
 
-if [ -d /Users/$USER/code/dotfiles/work ]; then
-    . /Users/$USER/code/dotfiles/work/work_aliases
-    . /Users/$USER/code/dotfiles/work/workrc
+if [ -d $HOME/code/dotfiles/work ]; then
+    . $HOME/code/dotfiles/work/work_aliases
+    . $HOME/code/dotfiles/work/workrc
 fi
 
 if [ "$(uname)" == "Darwin" ]; then

@@ -50,7 +50,8 @@ got() {
     go test -v "$@" > $logfile
   fi
 
-  [[ "$?" == 2 ]] && return 2
+  local code="$?"
+  [[ "$code" != 0 ]] && return "$code"
 
   echo "$(date)"
   grep -v "    --- PASS:" $logfile | grep "PASS:"
