@@ -24,6 +24,26 @@ Plug 'arcticicestudio/nord-vim'
 
 call plug#end()
 
+function! QuickFixTree(location=0) abort
+    if a:location == 1
+        let entries = getloclist(0)
+        let list_name = "Location"
+    else
+        let entries = getqflist()
+        let list_name = "Quickfix"
+    endif
+
+    if empty(entries)
+        echo list_name . " list is empty"
+        return
+    endif
+
+    let paths = map(entries, {idx, entry -> fnamemodify(bufname(entry['bufnr']), ":p:.")})
+    echo system("tree -a --fromfile .", paths)
+endfunction
+
+command! TreeLoc call QuickFixTree(1)
+command! TreeQuick call QuickFixTree(0)
 
 " # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 " autocommands
