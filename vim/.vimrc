@@ -189,7 +189,7 @@ nmap <leader>w :w<CR>
 nmap <leader>m :make<CR>
 
 " file searching
-nnoremap <leader>gg :grep "<C-R><C-W>" **/* <CR>
+nnoremap <leader>gg :grep "<C-R><C-W>" <CR>
 
 " copy current file path
 nnoremap <leader>cf :let @*=expand("%:p")<CR>

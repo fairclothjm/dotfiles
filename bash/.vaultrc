@@ -59,13 +59,16 @@ vunset() {
 
 # print vault env vars and processes
 vv() {
-  echo "VAULT_DEV_ROOT_TOKEN_ID=$VAULT_DEV_ROOT_TOKEN_ID"
-  echo "VAULT_TOKEN=$VAULT_TOKEN"
+  vault --version
+  echo
   echo "VAULT_ADDR=$VAULT_ADDR"
   echo "VAULT_CACERT=$VAULT_CACERT"
+  echo "VAULT_CLIENT_TIMEOUT=$VAULT_CLIENT_TIMEOUT"
+  echo "VAULT_DEV_ROOT_TOKEN_ID=$VAULT_DEV_ROOT_TOKEN_ID"
   echo "VAULT_LICENSE=$VAULT_LICENSE"
   echo "VAULT_LICENSE_PATH=$VAULT_LICENSE_PATH"
   echo "VAULT_NAMESPACE=$VAULT_NAMESPACE"
+  echo "VAULT_TOKEN=$VAULT_TOKEN"
 
   local output=$(ps aux | awk 'NR==1 || /vault server/' | grep -v awk)
   readarray -t lines <<<"$output"

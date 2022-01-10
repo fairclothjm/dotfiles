@@ -16,6 +16,7 @@ if [ "$(uname)" == "Darwin" ]; then
     fi
 fi
 
+
 # colors
 blck=$"\e[1;30m"
 red=$"\e[1;31m"
