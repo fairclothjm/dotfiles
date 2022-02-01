@@ -59,6 +59,7 @@ export EDITOR=vim
 # go
 export GOPATH=$HOME/go
 
+export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
 # history
 export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"

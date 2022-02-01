@@ -8,7 +8,7 @@ alias valias="grep 'alias\s\w*\|v\w*(' $HOME/code/dotfiles/bash/.vaultrc"
 
 alias vaudit="vault audit enable file file_path=/tmp/vault_audit.log"
 alias vdebug='GCFLAGS="all=-N -l" make dev'
-alias vdlv="dlv --listen=:2345 --headless=true --api-version=2 exec ./pkg/darwin_amd64/vault -- server -dev -log-level=debug -dev-root-token-id=root -dev-plugin-dir=$HOME/dev/plugins"
+alias vdlv="dlv --listen=:2345 --headless=true --api-version=2 exec $HOME/go/bin/vault -- server -dev -log-level=debug -dev-root-token-id=root -dev-plugin-dir=$HOME/dev/plugins"
 alias vedit="vim $HOME/code/dotfiles/bash/.vaultrc"
 alias vservecluster="vault server -dev -dev-root-token-id=root -log-level=debug -dev-three-node"
 
@@ -45,6 +45,12 @@ vset() {
   export VAULT_ADDR="http://127.0.0.1:8200"
   export VAULT_LICENSE_PATH="$HOME/dev/license/vault.hclic"
   export VAULT_LICENSE="$(cat $HOME/dev/license/vault.hclic)"
+}
+
+# vset but with extra goodies
+vsetx() {
+  vset
+  export VAULT_CLIENT_TIMEOUT=1000
 }
 
 vunset() {

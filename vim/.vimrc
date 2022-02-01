@@ -203,13 +203,17 @@ endif
 
 let mapleader = ","
 nmap <leader>vv :edit $MYVIMRC<CR>
+
+" " diff
 nmap <leader>dt :windo diffthis<CR>
 nmap <leader>do :diffoff<CR>
+
 nmap <leader>w :w<CR>
 nmap <leader>m :make<CR>
 
 " file searching
 nnoremap <leader>gg :grep "<C-R><C-W>" <CR>
+nnoremap <leader>gt :grep "TODO\(JM\)" <CR>
 
 " copy current file path
 nnoremap <leader>cf :let @*=expand("%:p")<CR>
@@ -220,7 +224,6 @@ nnoremap <leader>vf :! open -a "Google Chrome" %<CR>
 nnoremap <leader><space> :noh<CR>
 " search and replace word under cursor
 nnoremap <leader>sr :%s/<C-R><C-W>/
-
 
 " insert date
 nnoremap <leader>date "=strftime("%F")<CR>P
