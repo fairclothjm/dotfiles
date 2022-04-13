@@ -145,6 +145,7 @@ augroup nord-theme-overrides
   autocmd!
   " use a darker background color for nord vim
   autocmd ColorScheme nord highlight Normal ctermbg=NONE guibg=#1c1e24
+  autocmd ColorScheme nord highlight MatchParen term=reverse ctermfg=0 ctermbg=6 guifg=#3B4252 guibg=#88C0D0
 augroup END
 
 syntax on
@@ -204,7 +205,7 @@ endif
 let mapleader = ","
 nmap <leader>vv :edit $MYVIMRC<CR>
 
-" " diff
+" diff
 nmap <leader>dt :windo diffthis<CR>
 nmap <leader>do :diffoff<CR>
 
@@ -212,11 +213,13 @@ nmap <leader>w :w<CR>
 nmap <leader>m :make<CR>
 
 " file searching
-nnoremap <leader>gg :grep "<C-R><C-W>" <CR>
+nnoremap <leader>gg :grep "<C-R><C-W>" -g "!*_test.go" -g "!*.proto" <CR>
 nnoremap <leader>gt :grep "TODO\(JM\)" <CR>
 
 " copy current file path
 nnoremap <leader>cf :let @*=expand("%:p")<CR>
+" copy current file path for dlv debugging
+nnoremap <leader>bp :let @*=join(["b", join([expand('%'),  line(".")], ':')], " ")<CR>
 " open current file in Chrome Browser
 nnoremap <leader>vf :! open -a "Google Chrome" %<CR>
 
@@ -231,6 +234,9 @@ nnoremap <leader>date "=strftime("%F")<CR>P
 " insert shell skeleton
 nnoremap <leader>sh :0r ~/.vim/templates/bash/skeleton.sh<CR>G
 nnoremap <leader>` i```<CR>```<ESC>O
+
+" execute current file
+nnoremap <F9> :!clear && %:p<Enter>
 
 " # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 " Plugin configuration

@@ -71,11 +71,16 @@ gotd() {
   fi
 
   if [[ "$@" =~ "Test" ]]; then
-    dlv test -- -test.run "$@"
+    dlv test --headless --listen=:2345 -- -test.run "$@"
   else
     go test -c -o debug.test
     dlv exec debug.test
   fi
+}
+
+goc() {
+    t="/tmp/go-cover.$$.tmp"
+    go test -coverprofile=$t $@ && go tool cover -html=$t && unlink $t
 }
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #

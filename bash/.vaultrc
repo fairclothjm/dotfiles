@@ -18,7 +18,7 @@ alias vservecluster="vault server -dev -dev-root-token-id=root -log-level=debug 
 # run dev build of vault in dev mode
 # optionally pass in "&" to run in the background
 vdev() {
-  ./pkg/darwin_amd64/vault server \
+  $HOME/go/bin/vault server \
     -dev \
     -log-level="debug" \
     -dev-ha \
@@ -37,6 +37,12 @@ vserve() {
     -log-level=trace \
     -dev-plugin-dir=$HOME/dev/plugins \
     "$@"
+}
+
+vdlvagent() {
+  dlv --listen=:2345 --headless=true --api-version=2 \
+    exec $HOME/go/bin/vault -- \
+    agent -log-level=trace "$@"
 }
 
 vset() {
@@ -82,6 +88,21 @@ vv() {
     echo
     echo "$output"
   fi
+}
+
+# build a binary for vault enterprise
+vent() {
+  XC_OSARCH=linux/amd64 make entbin
+}
+
+# build a docker image for vault enterprise
+ventdock() {
+  eval $(ssh-agent)
+  ssh-add ~/.ssh/id_ed25519
+  XC_OSARCH=linux/amd64 make entbin
+  mkdir -p ./dist/linux/amd64
+  cp ./bin/vault ./dist/linux/amd64
+  docker build --build-arg VERSION=1.10-dev --build-arg BIN_NAME=vault --build-arg TARGETOS=linux --build-arg TARGETARCH=amd64 -t vault:dev .
 }
 
 # vault backport

@@ -5,6 +5,7 @@ nmap <leader>gof :GoReferrers<CR>
 nmap <leader>gor :GoRun<CR>
 nmap <leader>goR :GoRun %<CR>
 nmap <leader>got :GoTest<CR>
+nmap <leader>goT :GoTestCompile<CR>
 nmap <leader>goi :GoImport
 nmap <leader>gop :tabnew /Users/$USER/code/go/test/main.go<CR>
 
