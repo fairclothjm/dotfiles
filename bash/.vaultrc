@@ -35,7 +35,7 @@ vserve() {
     -dev \
     -dev-root-token-id=root \
     -log-level=trace \
-    -dev-plugin-dir=$HOME/dev/plugins \
+    -config=$HOME/dev/config/vault.hcl \
     "$@"
 }
 

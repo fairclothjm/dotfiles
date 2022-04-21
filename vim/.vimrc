@@ -13,7 +13,7 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'scrooloose/nerdtree'
 
 " syntax
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'fatih/vim-go'
 Plug 'jvirtanen/vim-hcl'
 
 Plug 'arcticicestudio/nord-vim'
@@ -133,6 +133,12 @@ else
     let &grepprg='grep -n -r --exclude=' . shellescape(&wildignore) . ' $* .'
 endif
 
+" fix the redraw problems with external grep
+command! -nargs=+ Silent execute 'silent <args>' | redraw!
+
+" prevent visual feedback on grep
+cnoreabbrev <expr> grep  (getcmdtype() ==# ':' && getcmdline() =~# '^grep')  ? 'Silent grep'  : 'grep'
+
 " # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 " color
 "
@@ -213,8 +219,8 @@ nmap <leader>w :w<CR>
 nmap <leader>m :make<CR>
 
 " file searching
-nnoremap <leader>gg :grep "<C-R><C-W>" -g "!*_test.go" -g "!*.proto" <CR>
-nnoremap <leader>gt :grep "TODO\(JM\)" <CR>
+nnoremap <leader>gg :Silent grep "<C-R><C-W>" -g "!*_test.go" -g "!*.proto" <CR>
+nnoremap <leader>gt :Silent grep "TODO\(JM\)" <CR>
 
 " copy current file path
 nnoremap <leader>cf :let @*=expand("%:p")<CR>
