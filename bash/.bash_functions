@@ -11,6 +11,7 @@
 got() {
   local logfile=/tmp/gotest.log
   local filepath
+  local tags
 
   case "$1" in
     h|help)
@@ -21,6 +22,10 @@ got() {
       echo -e "\tgot flaky TestMyFunc"
       echo -e "\nA wrapper for \"go test\""
       return 0
+      ;;
+    e|ent)
+      shift
+      tags="-tags enterprise"
       ;;
     f|flaky)
       shift
@@ -45,9 +50,9 @@ got() {
   esac
 
   if [[ "$@" =~ "Test" ]]; then
-    go test -v --run "$@" > $logfile
+    go test -parallel 8 $tags -v --run "$@" > $logfile
   else
-    go test -v "$@" > $logfile
+    go test -parallel 8 $tags -v "$@" > $logfile
   fi
 
   # JM: why did I add this?

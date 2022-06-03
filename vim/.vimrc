@@ -220,6 +220,7 @@ nmap <leader>m :make<CR>
 
 " file searching
 nnoremap <leader>gg :Silent grep "<C-R><C-W>" -g "!*_test.go" -g "!*.proto" <CR>
+nnoremap <leader>tgg :Silent grep "<C-R><C-W>" -g "*_test.go" <CR>
 nnoremap <leader>gt :Silent grep "TODO\(JM\)" <CR>
 
 " copy current file path
