@@ -92,17 +92,31 @@ vv() {
 
 # build a binary for vault enterprise
 vent() {
-  XC_OSARCH=linux/amd64 make entbin
+  GOOS=linux GOARCH=amd64 make entbin
 }
 
 # build a docker image for vault enterprise
 ventdock() {
+  local version="$1"
+  local tag="$2"
+
+  [[ ${version:?} ]]
+
+  if [ -z $tag ]; then
+    tag="vault-ent:dev"
+  fi
+
   eval $(ssh-agent)
   ssh-add ~/.ssh/id_ed25519
-  XC_OSARCH=linux/amd64 make entbin
+  GOOS=linux GOARCH=amd64 make entbin
   mkdir -p ./dist/linux/amd64
   cp ./bin/vault ./dist/linux/amd64
-  docker build --build-arg VERSION=1.10-dev --build-arg BIN_NAME=vault --build-arg TARGETOS=linux --build-arg TARGETARCH=amd64 -t vault:dev .
+  docker build \
+    --build-arg VERSION=${version}-dev \
+    --build-arg BIN_NAME=vault \
+    --build-arg TARGETOS=linux \
+    --build-arg TARGETARCH=amd64 \
+    -t ${tag} .
 }
 
 # vault backport

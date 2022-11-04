@@ -17,8 +17,10 @@ got() {
     h|help)
       echo "usage: got [<command>] [<args>]"
       echo -e "\tgot TestMyFunc"
+      echo -e "\tgot ent TestMyFunc"
       echo -e "\tgot log"
       echo -e "\tgot save [FILENAME] - will be save to /tmp"
+      echo -e "\tgot tail"
       echo -e "\tgot flaky TestMyFunc"
       echo -e "\nA wrapper for \"go test\""
       return 0
@@ -45,6 +47,10 @@ got() {
 
       filepath="/tmp/$filename"
       cp "$logfile" "$filepath" && echo "got: saved log at $filepath"
+      return 0
+      ;;
+    t|tail)
+      tail -F $logfile
       return 0
       ;;
   esac

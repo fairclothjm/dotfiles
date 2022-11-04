@@ -139,6 +139,7 @@ command! -nargs=+ Silent execute 'silent <args>' | redraw!
 " prevent visual feedback on grep
 cnoreabbrev <expr> grep  (getcmdtype() ==# ':' && getcmdline() =~# '^grep')  ? 'Silent grep'  : 'grep'
 
+
 " # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 " color
 "
@@ -216,12 +217,15 @@ nmap <leader>dt :windo diffthis<CR>
 nmap <leader>do :diffoff<CR>
 
 nmap <leader>w :w<CR>
-nmap <leader>m :make<CR>
+nmap <leader>mm :make<CR>
+
+" past github markdown link over visual selection
+map <leader>ml S]f]a()<ESC>P
 
 " file searching
 nnoremap <leader>gg :Silent grep "<C-R><C-W>" -g "!*_test.go" -g "!*.proto" <CR>
 nnoremap <leader>tgg :Silent grep "<C-R><C-W>" -g "*_test.go" <CR>
-nnoremap <leader>gt :Silent grep "TODO\(JM\)" <CR>
+nnoremap <leader>td :Silent grep "TODO\(JM\)" <CR>
 
 " copy current file path
 nnoremap <leader>cf :let @*=expand("%:p")<CR>
