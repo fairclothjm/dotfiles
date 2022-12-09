@@ -8,6 +8,7 @@ nmap <leader>got :GoTest<CR>
 nmap <leader>gtt :GoTestCompile<CR>
 nmap <leader>goi :GoImport
 nmap <leader>gop :tabnew /Users/$USER/code/go/test/main.go<CR>
+nmap <leader>gcd ^/\w*(<CR>gd<CR>
 
 let g:go_list_type = "quickfix"         " do not use location list
 let g:go_template_autocreate = 0        " disable vim-go template

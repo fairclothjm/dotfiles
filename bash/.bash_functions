@@ -50,7 +50,7 @@ got() {
       return 0
       ;;
     t|tail)
-      tail -F $logfile
+      tail -n 30 -F $logfile
       return 0
       ;;
   esac
@@ -89,6 +89,8 @@ gotd() {
   fi
 }
 
+# get go coverage report in the browser
+# usage : goc -run TestLogin_VMSSFlexOrchestrationMode
 goc() {
     t="/tmp/go-cover.$$.tmp"
     go test -coverprofile=$t $@ && go tool cover -html=$t && unlink $t
