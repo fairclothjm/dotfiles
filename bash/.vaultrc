@@ -12,6 +12,9 @@ alias vdlv="dlv --listen=:2345 --headless=true --api-version=2 exec $HOME/go/bin
 alias vedit="vim $HOME/code/dotfiles/bash/.vaultrc"
 alias vservecluster="vault server -dev -dev-root-token-id=root -log-level=debug -dev-three-node"
 
+# terraform debugging
+alias tfdlv="dlv exec --listen=:2345 --accept-multiclient --continue --headless ~/.terraform.d/plugins/terraform-provider-vault -- -debug"
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Functions
 

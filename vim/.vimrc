@@ -177,8 +177,10 @@ map <C-k> :cp<CR>
 " format json in visual or select mode with  =j
 nmap =j :%!python -m json.tool<CR>
 
-" search for visual selection
-:vn // y/<C-R>"<CR>
+" define command ':SS <WORD>' to search for <WORD>s that include special characters
+command! -nargs=1 SS let @/ = '\V'.escape(<q-args>, '/\')|normal! /<C-R>/<CR>
+" search for visual selection and use the SS command we just defined
+:vn // y:SS <C-R>"<CR>
 
 " Swap ` and ' for marks; go to line and col of mark with '
 nnoremap ' `

@@ -75,18 +75,42 @@ got() {
 # compile and execute dlv debugger
 # usage: gotd TestFoo
 gotd() {
+  local tags
+  case "$1" in
+    h|help)
+      echo "usage: gotd [<command>] [<args>]"
+      echo -e "\texport GOT_PP=./path/to/pkg"
+      echo -e "\tgotd TestMyFunc"
+      echo -e "\tgotd ent TestMyFunc"
+      echo -e "\tgotd ent TestMyFunc"
+      echo -e "\nA wrapper for dlv and \"go test\""
+      return 0
+      ;;
+    e|ent)
+      shift
+      tags="-tags=enterprise"
+      ;;
+  esac
+
   if [[ "$@" == "" ]]; then
       echo "usage: gotd [<args>]"
       echo -e "\tgotd TestMyFunc"
       return 0
   fi
 
+  if [[ -z "$GOT_PP" ]]; then
+    pushd $GOT_PP > /dev/null
+    echo "pkg: $GOT_PP"
+  fi
+
   if [[ "$@" =~ "Test" ]]; then
-    dlv test --headless --listen=:2345 -- -test.run "$@"
+    dlv test --headless --listen=:2345 --build-flags="$tags" -- -test.run "$@"
   else
     go test -c -o debug.test
     dlv exec debug.test
   fi
+
+  popd > /dev/null
 }
 
 # get go coverage report in the browser
@@ -114,3 +138,6 @@ gtag() {
     git push origin "$1"
 }
 
+mov2mp4() {
+  ffmpeg -i "$1" -vcodec h264 -acodec aac "output_$(date "+%Y-%m-%d_%H%M%S")".mp4
+}
