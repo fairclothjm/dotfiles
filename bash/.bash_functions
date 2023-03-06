@@ -9,7 +9,9 @@
 #   got log
 #   got save
 got() {
-  local logfile=/tmp/gotest.log
+  local repo
+  repo=$(pwd | awk -F/ '{print $NF}')
+  local logfile=/tmp/gotest-${repo}.log
   local filepath
   local tags
 
@@ -75,6 +77,9 @@ got() {
 # compile and execute dlv debugger
 # usage: gotd TestFoo
 gotd() {
+  restore_dir() { if [[ -n "$GOT_PP" ]]; then popd > /dev/null; fi }
+  trap restore_dir SIGINT RETURN
+
   local tags
   case "$1" in
     h|help)
@@ -98,7 +103,7 @@ gotd() {
       return 0
   fi
 
-  if [[ -z "$GOT_PP" ]]; then
+  if [[ -n "$GOT_PP" ]]; then
     pushd $GOT_PP > /dev/null
     echo "pkg: $GOT_PP"
   fi
@@ -109,8 +114,6 @@ gotd() {
     go test -c -o debug.test
     dlv exec debug.test
   fi
-
-  popd > /dev/null
 }
 
 # get go coverage report in the browser
