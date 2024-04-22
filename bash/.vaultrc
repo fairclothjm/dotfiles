@@ -37,9 +37,49 @@ vserve() {
   vault server \
     -dev \
     -dev-root-token-id=root \
-    -log-level=trace \
-    -config=$HOME/dev/config/vault.hcl \
+    -log-level=debug \
+    -config="$HOME/dev/config/vault.hcl" \
     "$@"
+}
+
+vwait() {
+  if [ -z $VAULT_ADDR ]; then
+    echo "VAULT_ADDR not set!"
+    return 1
+  fi
+
+  while ! vault status >/dev/null 2>&1; do
+    sleep 1
+  done
+}
+
+vcurl() {
+  if [[ "$@" == "" ]]; then
+    echo "usage: vcurl PATH"
+    echo
+    echo "example:"
+    echo -e "\tvcurl secret/data/my-secret"
+    echo
+    return 0
+  fi
+
+  local path="$1"
+  local method="$2"
+
+  [[ ${path:?} ]]
+
+  # currently not supported
+  if [ -z "$method" ]; then
+    method="--request GET"
+  fi
+
+  curl -s \
+    --header "X-Vault-Token: root" ${method} \
+    "http://127.0.0.1:8200/v1/$path" | jq
+}
+
+tft() {
+  make testacc-ent TESTARGS="-v -run ${@} ./vault/..."
 }
 
 vdlvagent() {
@@ -160,4 +200,24 @@ vbp() {
   echo "git cherry-pick ${sha}"
   echo '```'
   echo
+}
+
+# tfdev
+#   usage:
+#     # enable vault provider override
+#     tfdev
+#
+#     # disable vault provider override
+#     tfdev 0
+tfdev() {
+  if [[ "$@" == "" ]]; then
+    # enable vault provider override
+    # sed will uncomment line if not already uncommented
+    sed -i '' '/vault/s/^#//g' ${HOME}/.terraformrc
+    return 0
+  fi
+
+  # disable vault provider overrride
+  # sed will comment the line if not already commented
+  sed -i '' -e '/vault/ s/^#*/#/' ${HOME}/.terraformrc
 }

@@ -3,6 +3,61 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Go
 
+# wrapper for gotestsum
+# usage:
+#   gt TestMyFunc
+#   gt
+gt() {
+  local repo
+  repo=$(pwd | awk -F/ '{print $NF}')
+
+  local logfile_base=/tmp/gotest-${repo}
+  local logfile=${logfile_base}.log
+  local logfile_json=${logfile_base}.json
+  local previous=${logfile_base}-previous.log
+
+  cp $logfile $previous
+
+  case "$1" in
+    e|ent)
+      shift
+      tags="-tags enterprise"
+      ;;
+    l|log)
+      vim $logfile
+      return 0
+      ;;
+    p|previous)
+      vim $previous
+      return 0
+      ;;
+    s|save)
+      if [[ -z "$2" ]]; then
+        filename="gotest-$(date +"%m-%d-%Y-%H%M%S").log"
+      else
+        filename="$2.log"
+      fi
+
+      filepath="/tmp/$filename"
+      cp "$logfile" "$filepath" && echo "gt: saved log at $filepath"
+      return 0
+      ;;
+    t|tail)
+      tail -n 30 -F $logfile
+      return 0
+      ;;
+  esac
+
+  if [[ "$@" =~ "Test" ]]; then
+    gotestsum --format testname --jsonfile $logfile_json -- --run "$@"
+  else
+    gotestsum --format testname --jsonfile $logfile_json
+  fi
+
+  # parse JSON and remove any null values and empty lines
+  jq -r .Output $logfile_json | sed '/^null$/d' | sed '/^[[:space:]]*$/d' > $logfile
+}
+
 # wrapper for "go test"
 # usage:
 #   got TestMyFunc
@@ -12,8 +67,11 @@ got() {
   local repo
   repo=$(pwd | awk -F/ '{print $NF}')
   local logfile=/tmp/gotest-${repo}.log
+  local previous=/tmp/gotest-${repo}-previous.log
   local filepath
   local tags
+
+  cp $logfile $previous > /dev/null
 
   case "$1" in
     h|help)
@@ -38,6 +96,10 @@ got() {
       ;;
     l|log)
       vim $logfile
+      return 0
+      ;;
+    p|previous)
+      vim $previous
       return 0
       ;;
     s|save)
@@ -77,9 +139,6 @@ got() {
 # compile and execute dlv debugger
 # usage: gotd TestFoo
 gotd() {
-  restore_dir() { if [[ -n "$GOT_PP" ]]; then popd > /dev/null; fi }
-  trap restore_dir SIGINT RETURN
-
   local tags
   case "$1" in
     h|help)
@@ -114,6 +173,10 @@ gotd() {
     go test -c -o debug.test
     dlv exec debug.test
   fi
+
+  if [[ -n "$GOT_PP" ]]; then
+    popd > /dev/null
+  fi
 }
 
 # get go coverage report in the browser
@@ -143,4 +206,10 @@ gtag() {
 
 mov2mp4() {
   ffmpeg -i "$1" -vcodec h264 -acodec aac "output_$(date "+%Y-%m-%d_%H%M%S")".mp4
+}
+
+# vio
+# open all staged files in vim
+vio() {
+  vim $(git status --porcelain | awk '{print $2}')
 }

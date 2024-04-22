@@ -2,6 +2,7 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-apathy'
@@ -14,7 +15,8 @@ Plug 'preservim/nerdtree'
 
 " syntax
 Plug 'fatih/vim-go'
-Plug 'jvirtanen/vim-hcl'
+" Plug 'jvirtanen/vim-hcl'
+Plug 'hashivim/vim-terraform'
 
 Plug 'arcticicestudio/nord-vim'
 
@@ -55,11 +57,13 @@ augroup Skeleton
 augroup END
 
 " auto format on save
-" augroup autofmt
-"     autocmd!
-"     au BufWrite *.js :Autoformat
-"     au BufWrite *.py :Black
-" augroup END
+augroup autofmt
+    autocmd!
+    " au BufWrite *.js :Autoformat
+    " au BufWrite *.py :Black
+    " au BufWrite *.hcl :% !terraform fmt -
+    " au BufWrite *.tf :% !terraform fmt -
+augroup END
 
 " error highlight whitespace
 augroup Whitespace
@@ -84,6 +88,7 @@ augroup END
 " vim settings
 "
 set autoindent
+set autowrite
 set backspace=indent,eol,start
 set clipboard=unnamed
 set cmdheight=2
@@ -170,17 +175,37 @@ map <F10> :echo "hi<"
 " Mappings
 "
 
+" attempt to save me from stretching to CTRL
+map <space>u <C-U>zz
+map <space>d <C-D>zz
+map <space>r <C-R>
+
+" remap window commands
+map <space>j <C-W>j
+map <space>k <C-W>k
+map <space>h <C-W>h
+map <space>l <C-W>l
+map <space>o <C-W>o
+map <space>c <C-W>c
+
+" Arrow keys because sometimes it do be like that
+map <Up> <C-U>zz
+map <Down> <C-D>zz
+
 " ctrl-j and ctrl-k to jump through quickfix list
-map <C-j> :cn<CR>
-map <C-k> :cp<CR>
+map <C-j> :cn<CR>zz
+map <C-k> :cp<CR>zz
 
 " format json in visual or select mode with  =j
 nmap =j :%!python -m json.tool<CR>
 
-" define command ':SS <WORD>' to search for <WORD>s that include special characters
-command! -nargs=1 SS let @/ = '\V'.escape(<q-args>, '/\')|normal! /<C-R>/<CR>
-" search for visual selection and use the SS command we just defined
-:vn // y:SS <C-R>"<CR>
+" use star with a visual selection
+vnoremap <silent> * :<C-U>
+  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+  \gvy/<C-R><C-R>=substitute(
+  \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+  \gV:call setreg('"', old_reg, old_regtype)<CR>
+
 
 " Swap ` and ' for marks; go to line and col of mark with '
 nnoremap ' `
@@ -207,6 +232,11 @@ if !exists(":EditFtplugin")
                 \. (empty(expand('<args>')) ? &filetype : expand('<args>')) . '.vim'
 endif
 
+if !exists(":TfDoc")
+    command! -complete=filetype -nargs=? EditFtplugin execute 'edit ~/.vim/ftplugin/'
+                \. (empty(expand('<args>')) ? &filetype : expand('<args>')) . '.vim'
+endif
+
 " # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 " Leader mappings
 "
@@ -229,6 +259,8 @@ nnoremap <leader>gg :Silent grep "<C-R><C-W>" -g "!*_test.go" -g "!*.proto" <CR>
 nnoremap <leader>tgg :Silent grep "<C-R><C-W>" -g "*_test.go" <CR>
 nnoremap <leader>td :Silent grep "TODO\(JM\)" <CR>
 
+" copy github link to visually selected line(s)
+map <leader>cl :GBrowse! <CR>
 " copy current file path
 nnoremap <leader>cf :let @*=expand("%:p")<CR>
 " copy current file path for dlv debugging
@@ -240,13 +272,15 @@ nnoremap <leader>vf :! open -a "Google Chrome" %<CR>
 nnoremap <leader><space> :noh<CR>
 " search and replace word under cursor
 nnoremap <leader>sr :%s/<C-R><C-W>/
+nnoremap <leader>tsr :%s/<C-R>"/consts.Field
 
 " insert date
 nnoremap <leader>date "=strftime("%F")<CR>P
 
 " insert shell skeleton
 nnoremap <leader>sh :0r ~/.vim/templates/bash/skeleton.sh<CR>G
-nnoremap <leader>` i```<CR>```<ESC>O
+nmap <leader>` ysiw`
+nnoremap <leader>cb i```<CR>```<ESC>O
 
 " execute current file
 nnoremap <F9> :!clear && %:p<Enter>
