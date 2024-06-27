@@ -1,6 +1,6 @@
 call plug#begin('~/.vim/plugged')
 
-Plug 'Raimondi/delimitMate'
+" Plug 'Raimondi/delimitMate'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-surround'
@@ -46,6 +46,14 @@ endfunction
 
 command! TreeLoc call QuickFixTree(1)
 command! TreeQuick call QuickFixTree(0)
+
+fun! TrimWhitespace()
+    let l:save = winsaveview()
+    keeppatterns %s/\s\+$//e
+    call winrestview(l:save)
+endfun
+
+command! TrimWhitespace call TrimWhitespace ()
 
 " # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 " autocommands

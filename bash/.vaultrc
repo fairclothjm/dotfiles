@@ -221,3 +221,21 @@ tfdev() {
   # sed will comment the line if not already commented
   sed -i '' -e '/vault/ s/^#*/#/' ${HOME}/.terraformrc
 }
+
+vscan() {
+  if [[ -z "$1" ]]; then
+    echo "[error] binary file path required"
+    return 1
+  fi
+
+  scan binary $1 --log --log-file /tmp/scan.log --json > /tmp/scan.json;
+  jq -r '.runs[].results[].message.text' /tmp/scan.json | sort | uniq > /tmp/scan-deps.txt
+}
+
+vscanup() {
+  awk '{print $NF}' /tmp/scan-deps.txt | sort | uniq | sed 's/@.*/@latest/' > /tmp/scan-up.txt
+  set -x
+  cat /tmp/scan-up.txt | xargs -L1 go get
+  go mod tidy
+  set +x
+}

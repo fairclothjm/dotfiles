@@ -16,6 +16,7 @@ if [ "$(uname)" == "Darwin" ]; then
     fi
 fi
 
+export DOCKER_CLI_HINTS=false
 
 # colors
 blck=$"\e[1;30m"
@@ -62,7 +63,9 @@ export GOPATH=$HOME/go
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 
 # history
-export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
+# Don't save trivial one and two character commands on the history list
+HISTIGNORE="?:??"
+export HISTIGNORE="$HISTIGNORE:&:[ ]*:exit:ls:l *:bg:fg:history*:clear"
 export HISTSIZE=2000000
 export HISTFILESIZE=30000000
 
