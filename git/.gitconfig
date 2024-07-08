@@ -1,6 +1,10 @@
 [user]
 	name = JM Faircloth
 	email = fairclothjm@gmail.com
+
+[includeIf "gitdir:~/"]
+    path = ~/code/dotfiles/work/.gitconfig
+
 [core]
 	excludesfile = ~/.gitignore_global
 	editor = vim
@@ -11,3 +15,10 @@
 	st = status
 	d = diff
 	br = branch
+[maintenance]
+	repo = /Users/jmf/hc/vault
+	repo = /Users/jmf/hc/vault-enterprise
+	repo = /Users/jmf/hc/terraform-provider-vault
+
+[url "ssh://git@github.com/"]
+    insteadOf = https://github.com/

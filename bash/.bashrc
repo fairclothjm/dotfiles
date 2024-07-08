@@ -61,6 +61,7 @@ export EDITOR=vim
 export GOPATH=$HOME/go
 
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
+export HGREP_DEFAULT_OPTS='--theme Nord'
 
 # history
 # Don't save trivial one and two character commands on the history list

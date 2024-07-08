@@ -11,7 +11,7 @@ fi
 ulimit -n 10240
 
 export PATH="$HOME/bin:$PATH:$GOPATH/bin:/usr/local/go/bin"
-export PATH="/usr/local/opt/openjdk@11/bin:$PATH"
-export PATH="/usr/local/opt/postgresql@15/bin:$PATH"
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 [[ -f ~/.bashrc ]] && source ~/.bashrc # ghcup-env
