@@ -252,6 +252,8 @@ endif
 let mapleader = ","
 nmap <leader>vv :edit $MYVIMRC<CR>
 
+nmap <leader>q :q<CR>
+
 " diff
 nmap <leader>dt :windo diffthis<CR>
 nmap <leader>do :diffoff<CR>

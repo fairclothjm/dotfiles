@@ -213,3 +213,17 @@ mov2mp4() {
 vio() {
   vim $(git status --porcelain | awk '{print $2}')
 }
+
+makewait() {
+  while ! pidwait $(pgrep make); do sleep 1; done
+}
+
+pidwait() {
+  if [[ "$@" == "" ]]; then
+      echo "usage: pidwait <PID>"
+      return 0
+  fi
+
+  PID=$1
+  while lsof -p $PID +r 1 &>/dev/null; do sleep 1; done
+}
