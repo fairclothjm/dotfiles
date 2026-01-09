@@ -43,17 +43,25 @@ export LSCOLORS=gxfxcxdxbxegedabagacad
 if [[ -z "$VIMRUNTIME" ]]; then
     vim_shell=''
 else
-    vim_shell=' v'
+    vim_shell='v '
 fi
+
+git_branch() {
+  if [[ -n "$(gbranch)" ]]; then
+    printf "$(gbranch) "
+  fi
+}
 
 # bash
 if [[ "$TERM" =~ 256color ]]; then
-    PS1="\[${light_gray}\]\w \[${med_gray}\]\$(gbranch)";
+    PS1="\[${light_gray}\]\w \[${med_gray}\]\$(git_branch)";
     PS1+="\[${grn}\]${vim_shell}";
-    PS1+="\[${dark_gray}\] $ \[${end}\]";
+    PS1+="\[${dark_gray}\]$ \[${end}\]";
     PS1+="\[$(tput sgr0)\]";
     export PS1;
 fi
+
+export PS4='\[\033[0;32m\]+ \[\033[0m\]'
 
 export EDITOR=vim
 
@@ -67,8 +75,9 @@ export HGREP_DEFAULT_OPTS='--theme Nord'
 # Don't save trivial one and two character commands on the history list
 HISTIGNORE="?:??"
 export HISTIGNORE="$HISTIGNORE:&:[ ]*:exit:ls:l *:bg:fg:history*:clear"
-export HISTSIZE=2000000
-export HISTFILESIZE=30000000
+export HISTSIZE=20000000
+export HISTFILESIZE=300000000
+export HISTTIMEFORMAT="%F "
 
 
 export NVM_DIR="$HOME/.nvm"

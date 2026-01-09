@@ -1,6 +1,12 @@
 " vim-go
 
-if getcwd() == $HOME."/hc/vault-enterprise"
+let g:ent_repos = [
+    \$HOME."/hc/plugin/vault-plugin-database-oracle-enterprise",
+    \$HOME."/hc/plugin/vault-plugin-secrets-keymgmt",
+    \$HOME."/hc/plugin/vault-plugin-secrets-os",
+    \$HOME."/hc/vault-enterprise",
+    \]
+if index(g:ent_repos, getcwd()) >= 0  " If item is in the list.
     let g:go_build_tags ="enterprise"
 endif
 
@@ -48,6 +54,8 @@ let g:go_fmt_command="gopls"
 let g:go_gopls_gofumpt=1
 
 let g:go_test_timeout='25s'
+
+" let g:go_gopls_options = ['-exclude_test_files']
 
 " abbreviations
 iabbrev <buffer> iferr <ESC>:.-1read ~/.vim/templates/go/err.go<CR>2=<CR>o

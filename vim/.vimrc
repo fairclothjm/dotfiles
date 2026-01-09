@@ -26,6 +26,13 @@ Plug 'arcticicestudio/nord-vim'
 
 call plug#end()
 
+function! s:FilterQuickfixList(bang, pattern)
+  let cmp = a:bang ? '!~#' : '=~#'
+  call setqflist(filter(getqflist(), "bufname(v:val['bufnr']) " . cmp . " a:pattern"))
+endfunction
+" use :QFilter! PATTERN to remove results that match the pattern
+command! -bang -nargs=1 -complete=file QFilter call s:FilterQuickfixList(<bang>0, <q-args>)
+
 function! QuickFixTree(location=0) abort
     if a:location == 1
         let entries = getloclist(0)
@@ -146,11 +153,12 @@ else
     let &grepprg='grep -n -r --exclude=' . shellescape(&wildignore) . ' $* .'
 endif
 
-" fix the redraw problems with external grep
-command! -nargs=+ Silent execute 'silent <args>' | redraw!
+" Define a custom Grep command that behaves exactly like :grep
+" but runs silently and redraws.
+command! -nargs=+ -complete=file Grep execute 'silent grep <args>' | redraw!
 
-" prevent visual feedback on grep
-cnoreabbrev <expr> grep  (getcmdtype() ==# ':' && getcmdline() =~# '^grep')  ? 'Silent grep'  : 'grep'
+" Map :grep to :Grep (using lowercase abbreviation)
+cnoreabbrev <expr> grep  (getcmdtype() ==# ':' && getcmdline() =~# '^grep')  ? 'Grep'  : 'grep'
 
 
 " # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -205,7 +213,7 @@ map <C-j> :cn<CR>zz
 map <C-k> :cp<CR>zz
 
 " format json in visual or select mode with  =j
-nmap =j :%!python -m json.tool<CR>
+nmap =j :%!python3 -m json.tool<CR>
 
 " use star with a visual selection
 vnoremap <silent> * :<C-U>
@@ -245,6 +253,10 @@ if !exists(":TfDoc")
                 \. (empty(expand('<args>')) ? &filetype : expand('<args>')) . '.vim'
 endif
 
+" vim-terraform  configs
+let g:terraform_fmt_on_save=1
+let g:terraform_align=1
+
 " # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 " Leader mappings
 "
@@ -268,6 +280,7 @@ map <leader>ml S]f]a()<ESC>P
 nnoremap <leader>gg :Silent grep "<C-R><C-W>" -g "!*_test.go" -g "!*.proto" <CR>
 nnoremap <leader>tgg :Silent grep "<C-R><C-W>" -g "*_test.go" <CR>
 nnoremap <leader>td :Silent grep "TODO\(JM\)" <CR>
+nnoremap <leader>ff :find **/<C-R><C-W><Left>
 
 " copy github link to visually selected line(s)
 map <leader>cl :GBrowse! <CR>

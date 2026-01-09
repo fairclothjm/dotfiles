@@ -114,7 +114,7 @@ got() {
       return 0
       ;;
     t|tail)
-      tail -n 30 -F $logfile
+      tail -n 30 -F $logfile |grep -v replication
       return 0
       ;;
   esac
@@ -180,10 +180,21 @@ gotd() {
 }
 
 # get go coverage report in the browser
-# usage : goc -run TestLogin_VMSSFlexOrchestrationMode
+# usage:
+#     goc
+#     goc -run TestFOO
 goc() {
     t="/tmp/go-cover.$$.tmp"
-    go test -coverprofile=$t $@ && go tool cover -html=$t && unlink $t
+    go test -coverprofile=$t -coverpkg=./... $@ && go tool cover -html=$t && unlink $t
+}
+
+godepupdate() {
+  set -x
+  go list -u -m -json all \
+    | jq -r 'select(.Indirect != true and .Update != null) | .Path+"@"+.Update.Version' \
+    | xargs -L1 go get
+  go mod tidy
+  set +x
 }
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -226,4 +237,28 @@ pidwait() {
 
   PID=$1
   while lsof -p $PID +r 1 &>/dev/null; do sleep 1; done
+}
+
+uf() {
+  echo 'go test -tags=enterprise -race -o testvault -c ./builtin/logical/database'
+  echo 'time untilfail -parallel=14 ./testvault -test.run "TestFoo$" -test.timeout 200s ; say done'
+}
+
+# list last 20 closed PRs across all repos
+ghprs() {
+  printf "Listing CLOSED authored PRs. Other queries: \n\tghprs --reviewed-by \n\tghprs --involves \n\n"
+  local QUERY
+  QUERY="${1:---author}"
+  gh search prs ${QUERY} "@me" --state closed --limit 20 \
+    --json number,title,url,repository \
+    --template '{{range .}}- {{.title}}: {{.url}}{{"\n"}}{{end}}'
+}
+
+ghprsopen() {
+  printf "Listing OPEN authored PRs. Other queries: \n\tghprs --reviewed-by \n\tghprs --involves \n\n"
+  local QUERY
+  QUERY="${1:---author}"
+  gh search prs ${QUERY} "@me" --state open --limit 20 \
+    --json number,title,url,repository \
+    --template '{{range .}}- {{.title}}: {{.url}}{{"\n"}}{{end}}'
 }

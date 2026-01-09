@@ -10,6 +10,7 @@ alias vaudit="vault audit enable file file_path=/tmp/vault_audit.log"
 alias vdebug='GCFLAGS="all=-N -l" make dev'
 alias vdlv="dlv --listen=:2345 --headless=true --api-version=2 exec $HOME/go/bin/vault -- server -dev -log-level=debug -dev-root-token-id=root -dev-plugin-dir=$HOME/dev/plugins"
 alias vedit="vim $HOME/code/dotfiles/bash/.vaultrc"
+alias vwork="vim $HOME/code/dotfiles/work/"
 alias vservecluster="vault server -dev -dev-root-token-id=root -log-level=debug -dev-three-node"
 
 # terraform debugging
@@ -18,12 +19,72 @@ alias tfdlv="dlv exec --listen=:2345 --accept-multiclient --continue --headless 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Functions
 
+# vpv - vault plugin version mapper
+vpv() {
+  if [[ "$@" == "" ]]; then
+    echo "usage: vpv PLUGIN"
+    echo
+    echo "example:"
+    echo -e "\tvpv auth-cf"
+    echo
+    return 0
+  fi
+  ent=""
+  if [[ $(basename $PWD) == "vault-enterprise" ]]; then
+    ent="+ent"
+  fi
+
+  local releases=(
+    main
+    release/1.21.x${ent}
+    release/1.20.x${ent}
+    release/1.19.x${ent}
+    release/1.16.x${ent}
+  )
+  local plugin="$1"
+
+  for b in "${releases[@]}"; do
+    echo $b
+    git show origin/$b:go.mod | grep $plugin
+  done
+}
+
+# vpbranch - vault plugin branch mapper
+vpbranch() {
+  git fetch origin
+  local releases=(
+    main
+    release/vault-1.20.x
+    release/vault-1.19.x
+    release/vault-1.18.x
+    release/vault-1.16.x
+  )
+
+  for branch in "${releases[@]}"; do
+    b="origin/$branch"
+    git log --oneline -1 $b 2>/dev/null && git rev-parse $b || echo "NOT FOUND: $b"
+    echo
+  done
+}
+
+vdevx() {
+  $HOME/go/bin/vault server \
+    -dev \
+    -log-level="trace" \
+    -dev-ha \
+    -dev-transactional \
+    -dev-root-token-id=root \
+    -dev-plugin-dir=$HOME/dev/plugins > /tmp/vault.log 2>&1 &
+
+  tail -f /tmp/vault.log | grep -v replication
+}
+
 # run dev build of vault in dev mode
 # optionally pass in "&" to run in the background
 vdev() {
   $HOME/go/bin/vault server \
     -dev \
-    -log-level="debug" \
+    -log-level="trace" \
     -dev-ha \
     -dev-transactional \
     -dev-root-token-id=root \
@@ -238,4 +299,50 @@ vscanup() {
   cat /tmp/scan-up.txt | xargs -L1 go get
   go mod tidy
   set +x
+  git diff go.mod
+}
+
+cdp() {
+  if [[ -z "$1" ]]; then
+    echo "[error] argument required"
+    return 1
+  fi
+
+  cd ~/hc/plugin/$(echo "$1" | rg "vault-plugin-\w*-\w*" -o)
+}
+
+# vddt (Vault Data Dog Test)
+#
+# Usage:
+#     vddt TestFoo
+vddt() {
+  if [[ -z "$1" ]]; then
+    echo "[error] argument required"
+    return 1
+  fi
+
+  echo '"'https://app.datadoghq.com/ci/test-runs?query=test_level%3Atest%20%40git.repository.id%3A%28%22github.com%2Fhashicorp%2Fvault-enterprise%22%20OR%20%22github.com%2Fhashicorp%2Fvault%22%29%20%40git.branch%3Amain%20%40test.name%3A%22${1}%22'"'
+}
+
+# usage:
+#   vcl PR_NUM TYPE
+#   vcl 1234 <feature|improvement|bug|change|deprecation>
+vcl() {
+  TYPE=$1
+  FEATURE=$2
+  case "$TYPE" in
+    feature|improvement|bug|change|deprecation)
+      echo "type is correct"
+      return 1
+      ;;
+    *)
+      echo "type is incorrect"
+      ;;
+  esac
+
+  echo -n "
+```release-note:${TYPE}
+${FEATURE}: DESCRIPTION
+```
+"
 }

@@ -13,7 +13,7 @@ ulimit -n 10240
 # oracle instant client
 export DYLD_LIBRARY_PATH=/usr/local/lib
 
-export PATH="$HOME/bin:$PATH:$GOPATH/bin:/usr/local/go/bin:$HOME/.local/bin"
+export PATH="$HOME/bin:$PATH:$GOPATH/bin:/usr/local/go/bin:$HOME/.local/bin:/usr/local/bin/instantclient_23_3"
 
 
 eval "$(/opt/homebrew/bin/brew shellenv)"

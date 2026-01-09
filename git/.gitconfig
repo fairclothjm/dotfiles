@@ -19,6 +19,11 @@
 	repo = /Users/jmf/hc/vault
 	repo = /Users/jmf/hc/vault-enterprise
 	repo = /Users/jmf/hc/terraform-provider-vault
+	repo = /Users/jmf/hc/web-unified-docs
 
 [url "ssh://git@github.com/"]
     insteadOf = https://github.com/
+[init]
+	defaultBranch = main
+[pull]
+	ff = only
