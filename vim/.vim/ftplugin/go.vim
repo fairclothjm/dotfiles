@@ -1,63 +1,77 @@
-" vim-go
+vim9script
 
-let g:ent_repos = [
-    \$HOME."/hc/plugin/vault-plugin-database-oracle-enterprise",
-    \$HOME."/hc/plugin/vault-plugin-secrets-keymgmt",
-    \$HOME."/hc/plugin/vault-plugin-secrets-os",
-    \$HOME."/hc/vault-enterprise",
-    \]
-if index(g:ent_repos, getcwd()) >= 0  " If item is in the list.
-    let g:go_build_tags ="enterprise"
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Enterprise Build Tags Logic
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+var ent_repos = [
+    expand("$HOME/hc/plugin/vault-plugin-database-oracle-enterprise"),
+    expand("$HOME/hc/plugin/vault-plugin-secrets-keymgmt"),
+    expand("$HOME/hc/plugin/vault-plugin-secrets-openldap-enterprise"),
+    expand("$HOME/hc/plugin/vault-plugin-secrets-os"),
+    expand("$HOME/hc/vault-enterprise"),
+]
+
+if index(ent_repos, getcwd()) >= 0
+    g:go_build_tags = "enterprise"
 endif
 
-" run :GoBuild or :GoTestCompile based on the go file
-function! s:build_go_files()
-  let l:file = expand('%')
-  if l:file =~# '^\f\+_test\.go$'
-    call go#test#Test(0, 1)
-  elseif l:file =~# '^\f\+\.go$'
-    call go#cmd#Build(0)
-  endif
-endfunction
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Functions
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-nmap <leader>ga :GoAlternate<CR>
-nmap <leader>gb :<C-u>call <SID>build_go_files()<CR>
-nmap <leader>ge :GoIfErr<CR>kkb
-nmap <leader>gf :GoReferrers<CR>
-nmap <leader>gr :GoRun<CR>
-nmap <leader>gR :GoRun %<CR>
-nmap <leader>gt :GoTest<CR>
-nmap <leader>gT :GoTestFunc<CR>
-nmap <leader>gp :tabnew /Users/$USER/code/go/test/main.go<CR>
+def BuildGoFiles()
+    var fname = expand('%')
+    if fname =~# '^\f\+_test\.go$'
+        go#test#Test(0, 1)
+    elseif fname =~# '^\f\+\.go$'
+        go#cmd#Build(0)
+    endif
+enddef
 
-" trick to restart LSP: https://github.com/fatih/vim-go/issues/2550
-nmap <leader>gx :GoBuildTags ''<CR>
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Mappings (Buffer Local)
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-" vim-go debugging
-" let g:go_debug = ['shell-commands']
-" let g:go_debug = ['lsp']
+# Use <buffer> for ftplugin mappings so they don't leak into other filetypes
+nnoremap <buffer> <leader>ga :GoAlternate<CR>
+nnoremap <buffer> <leader>gb :call <SID>BuildGoFiles()<CR>
+nnoremap <buffer> <leader>ge :GoIfErr<CR>kkb
+nnoremap <buffer> <leader>gf :GoReferrers<CR>
+nnoremap <buffer> <leader>gr :GoRun<CR>
+nnoremap <buffer> <leader>gR :GoRun %<CR>
+nnoremap <buffer> <leader>gt :GoTest<CR>
+nnoremap <buffer> <leader>gT :GoTestFunc<CR>
+nnoremap <buffer> <leader>gp :tabnew /Users/$USER/code/go/test/main.go<CR>
 
-let g:go_list_type = "quickfix"         " do not use location list
-let g:go_template_autocreate = 0        " disable vim-go template
+# Restart LSP trick
+nnoremap <buffer> <leader>gx :GoBuildTags ''<CR>
 
-let g:go_highlight_structs = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_operators = 1
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# vim-go configurations
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-let g:go_metalinter_autosave=0
-let g:go_metalinter_autosave_enabled=['golint', 'errcheck', 'deadcode']
-let g:go_metalinter_command='golangci-lint'
-let g:go_metalinter_enabled = [] " use repo config/defaults for golangci-lint
+g:go_list_type = "quickfix"
+g:go_template_autocreate = 0
 
-let g:go_fmt_command="gopls"
-let g:go_gopls_gofumpt=1
+g:go_highlight_structs = 1
+g:go_highlight_methods = 1
+g:go_highlight_functions = 1
+g:go_highlight_operators = 1
 
-let g:go_test_timeout='25s'
+g:go_metalinter_autosave = 0
+g:go_metalinter_autosave_enabled = ['golint', 'errcheck', 'deadcode']
+g:go_metalinter_command = 'golangci-lint'
+g:go_metalinter_enabled = []
 
-" let g:go_gopls_options = ['-exclude_test_files']
+g:go_fmt_command = "gopls"
+g:go_gopls_gofumpt = 1
+g:go_test_timeout = '25s'
 
-" abbreviations
-iabbrev <buffer> iferr <ESC>:.-1read ~/.vim/templates/go/err.go<CR>2=<CR>o
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Abbreviations
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+iabbrev <buffer> iferr <ESC>:.-1read ~/.vim/templates/go/err.go<CR>2==o
 iabbrev <buffer> fmain <ESC>:0read ~/.vim/templates/go/main.go<CR>2jo
-iabbrev <buffer> gswitch <ESC>:.-1read ~/.vim/templates/go/switch.go<CR>3=<CR>j2Wi
+iabbrev <buffer> gswitch <ESC>:.-1read ~/.vim/templates/go/switch.go<CR>3==j2Wi
