@@ -36,10 +36,10 @@ vpv() {
 
   local releases=(
     main
+    release/2.1.x${ent}
     release/1.21.x${ent}
     release/1.20.x${ent}
     release/1.19.x${ent}
-    release/1.16.x${ent}
   )
   local plugin="$1"
 
@@ -54,10 +54,10 @@ vpbranch() {
   git fetch origin
   local releases=(
     main
+    release/vault-2.x.x
+    release/vault-1.21.x
     release/vault-1.20.x
     release/vault-1.19.x
-    release/vault-1.18.x
-    release/vault-1.16.x
   )
 
   for branch in "${releases[@]}"; do
@@ -67,6 +67,10 @@ vpbranch() {
   done
 }
 
+vtail() {
+  tail -f /tmp/vault.log | grep -v replication | grep -v "updating max counts" | grep -v "hosts/test-host/accounts/test-user/creds status"
+}
+
 vdevx() {
   $HOME/go/bin/vault server \
     -dev \
@@ -74,6 +78,7 @@ vdevx() {
     -dev-ha \
     -dev-transactional \
     -dev-root-token-id=root \
+    -dev-plugin-pgp-key=$HOME/.gnupg/vault-plugin-key.pub \
     -dev-plugin-dir=$HOME/dev/plugins > /tmp/vault.log 2>&1 &
 
   tail -f /tmp/vault.log | grep -v replication | grep -v "updating max counts"
@@ -114,31 +119,6 @@ vwait() {
   done
 }
 
-vcurl() {
-  if [[ "$@" == "" ]]; then
-    echo "usage: vcurl PATH"
-    echo
-    echo "example:"
-    echo -e "\tvcurl secret/data/my-secret"
-    echo
-    return 0
-  fi
-
-  local path="$1"
-  local method="$2"
-
-  [[ ${path:?} ]]
-
-  # currently not supported
-  if [ -z "$method" ]; then
-    method="--request GET"
-  fi
-
-  curl -s \
-    --header "X-Vault-Token: root" ${method} \
-    "http://127.0.0.1:8200/v1/$path" | jq
-}
-
 tft() {
   make testacc-ent TESTARGS="-v -run ${@} ./vault/..."
 }
@@ -154,7 +134,6 @@ vset() {
   export VAULT_TOKEN="root"
   export VAULT_ADDR="http://127.0.0.1:8200"
   export VAULT_LICENSE_PATH="$HOME/dev/license/vault.hclic"
-  export VAULT_LICENSE="$(cat $HOME/dev/license/vault.hclic)"
 }
 
 # vset but with extra goodies
@@ -168,29 +147,43 @@ vunset() {
   unset VAULT_TOKEN
   unset VAULT_ADDR
   unset VAULT_CACERT
-  unset VAULT_LICENSE
   unset VAULT_LICENSE_PATH
   unset VAULT_NAMESPACE
 }
 
-# print vault env vars and processes
+# Print Vault environment variables and running server processes
 vv() {
-  vault --version
+  # 1. Print Vault version gracefully
+  if command -v vault >/dev/null 2>&1; then
+    vault --version
+  else
+    echo "vault: command not found"
+  fi
   echo
-  echo "VAULT_ADDR=$VAULT_ADDR"
-  echo "VAULT_CACERT=$VAULT_CACERT"
-  echo "VAULT_CLIENT_TIMEOUT=$VAULT_CLIENT_TIMEOUT"
-  echo "VAULT_DEV_ROOT_TOKEN_ID=$VAULT_DEV_ROOT_TOKEN_ID"
-  echo "VAULT_LICENSE=$VAULT_LICENSE"
-  echo "VAULT_LICENSE_PATH=$VAULT_LICENSE_PATH"
-  echo "VAULT_NAMESPACE=$VAULT_NAMESPACE"
-  echo "VAULT_TOKEN=$VAULT_TOKEN"
 
-  local output=$(ps aux | awk 'NR==1 || /vault server/' | grep -v awk)
-  readarray -t lines <<<"$output"
-  if [[ -n ${lines[1]} ]]; then
+  # 2. Dynamically list all VAULT_ variables (unmasked for dev)
+  echo "--- Environment Variables ---"
+  local has_vars=0
+  
+  # ${!VAULT_@} automatically finds all variables starting with "VAULT_"
+  for var in "${!VAULT_@}"; do
+    has_vars=1
+    echo "$var=${!var}"
+  done
+
+  if (( has_vars == 0 )); then
+    echo "No VAULT_* environment variables found."
+  fi
+
+  # 3. Print running Vault server processes cleanly
+  local vault_procs
+  vault_procs=$(ps aux | grep '[v]ault server')
+
+  if [[ -n "$vault_procs" ]]; then
     echo
-    echo "$output"
+    echo "--- Running Vault Processes ---"
+    ps aux | head -n 1  # Grab the header line dynamically
+    echo "$vault_procs"
   fi
 }
 
@@ -283,25 +276,6 @@ tfdev() {
   sed -i '' -e '/vault/ s/^#*/#/' ${HOME}/.terraformrc
 }
 
-vscan() {
-  if [[ -z "$1" ]]; then
-    echo "[error] binary file path required"
-    return 1
-  fi
-
-  scan binary $1 --log --log-file /tmp/scan.log --json > /tmp/scan.json;
-  jq -r '.runs[].results[].message.text' /tmp/scan.json | sort | uniq > /tmp/scan-deps.txt
-}
-
-vscanup() {
-  awk '{print $NF}' /tmp/scan-deps.txt | sort | uniq | sed 's/@.*/@latest/' > /tmp/scan-up.txt
-  set -x
-  cat /tmp/scan-up.txt | xargs -L1 go get
-  go mod tidy
-  set +x
-  git diff go.mod
-}
-
 cdp() {
   if [[ -z "$1" ]]; then
     echo "[error] argument required"
@@ -311,38 +285,112 @@ cdp() {
   cd ~/hc/plugin/$(echo "$1" | rg "vault-plugin-\w*-\w*" -o)
 }
 
-# vddt (Vault Data Dog Test)
-#
-# Usage:
-#     vddt TestFoo
-vddt() {
-  if [[ -z "$1" ]]; then
-    echo "[error] argument required"
-    return 1
-  fi
-
-  echo '"'https://app.datadoghq.com/ci/test-runs?query=test_level%3Atest%20%40git.repository.id%3A%28%22github.com%2Fhashicorp%2Fvault-enterprise%22%20OR%20%22github.com%2Fhashicorp%2Fvault%22%29%20%40git.branch%3Amain%20%40test.name%3A%22${1}%22'"'
-}
 
 # usage:
 #   vcl PR_NUM TYPE
 #   vcl 1234 <feature|improvement|bug|change|deprecation>
-vcl() {
-  TYPE=$1
-  FEATURE=$2
-  case "$TYPE" in
-    feature|improvement|bug|change|deprecation)
-      echo "type is correct"
-      return 1
-      ;;
-    *)
-      echo "type is incorrect"
-      ;;
-  esac
+# vcl() {
+#   TYPE=$1
+#   FEATURE=$2
+#   case "$TYPE" in
+#     feature|improvement|bug|change|deprecation)
+#       echo "type is correct"
+#       return 1
+#       ;;
+#     *)
+#       echo "type is incorrect"
+#       ;;
+#   esac
 
-  echo -n "
-```release-note:${TYPE}
-${FEATURE}: DESCRIPTION
-```
-"
+#   echo -n "
+# ```release-note:${TYPE}
+# ${FEATURE}: DESCRIPTION
+# ```
+# "
+# }
+
+vcl() {
+  local PR_NUM=$1
+  local TYPE=$2
+  local DIR="changelog"
+  local VALID_TYPES=("feature" "improvement" "bug" "change" "deprecation")
+
+  # 1. Validate or Prompt for PR Number
+  while [[ -z "$PR_NUM" || ! "$PR_NUM" =~ ^[0-9]+$ ]]; do
+    read -p "Enter PR Number: " PR_NUM
+  done
+
+  # 2. Validate or Prompt for Type
+  local match=0
+  for t in "${VALID_TYPES[@]}"; do
+    [[ "$TYPE" == "$t" ]] && match=1 && break
+  done
+
+  if [[ $match -eq 0 ]]; then
+    echo "Select the change type:"
+    PS3="Selection: "
+    select opt in "${VALID_TYPES[@]}"; do
+      if [[ -n "$opt" ]]; then
+        TYPE=$opt
+        break
+      else
+        echo "Invalid selection."
+      fi
+    done
+  fi
+
+  read -p "Enter Description: " DESCRIPTION
+
+  # 3. Create directory and define filename
+  mkdir -p "$DIR"
+  local FILENAME="${DIR}/_${PR_NUM}.txt"
+
+  # 4. Overwrite protection
+  if [[ -f "$FILENAME" ]]; then
+    read -p "Warning: $FILENAME exists. Overwrite? (y/N): " confirm
+    [[ "$confirm" != [yY] ]] && echo "Aborted." && return 1
+  fi
+
+  # 5. Generate Content
+cat <<EOF > ${FILENAME}
+\`\`\`release-note:${TYPE}
+${DESCRIPTION}
+\`\`\`
+EOF
+
+  # 6. Feedback
+  git status
+  echo
+  set -x
+  cat ${FILENAME}
+  set +x
+}
+
+# vpup - vault plugin updater (bark!)
+vpup() {
+  if [[ "$@" == "" ]]; then
+    echo "usage:"
+    echo "  vpup PLUGIN_NAME PLUGIN_VERSION"
+    echo "  vpup secrets-azure v0.26.3+ent"
+    return 1
+  fi
+  NAME="$1"
+  VERSION="$2"
+
+  # Step 1: Update OSS plugin import
+  go get "github.com/hashicorp/vault-plugin-${NAME}@${BASE_VERSION}"
+
+  if [[ "$VERSION" =~ \+ent$ ]]; then
+    # Extract base version (remove +ent suffix)
+    BASE_VERSION="${VERSION%+ent}"
+
+
+    # Step 2: Update enterprise replace directive
+    go mod edit -replace \
+      "github.com/hashicorp/vault-plugin-${NAME}=github.com/hashicorp/vault-plugin-${NAME}-enterprise@${VERSION}"
+  fi
+
+  # Step 3: Tidy up
+  go mod tidy
+  go mod verify
 }

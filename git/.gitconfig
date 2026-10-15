@@ -1,6 +1,7 @@
 [user]
 	name = JM Faircloth
 	email = fairclothjm@gmail.com
+	signingkey = /Users/jmf/.ssh/id_ed25519.pub
 
 [includeIf "gitdir:~/"]
     path = ~/code/dotfiles/work/.gitconfig
@@ -27,3 +28,7 @@
 	defaultBranch = main
 [pull]
 	ff = only
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true

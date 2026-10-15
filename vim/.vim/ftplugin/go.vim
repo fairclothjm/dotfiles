@@ -9,6 +9,7 @@ var ent_repos = [
     expand("$HOME/hc/plugin/vault-plugin-secrets-keymgmt"),
     expand("$HOME/hc/plugin/vault-plugin-secrets-openldap-enterprise"),
     expand("$HOME/hc/plugin/vault-plugin-secrets-os"),
+    expand("$HOME/hc/plugin/vault-plugin-secrets-spiffe"),
     expand("$HOME/hc/vault-enterprise"),
 ]
 

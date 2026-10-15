@@ -10,6 +10,7 @@ plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-apathy'
 
@@ -29,9 +30,6 @@ Plug 'arcticicestudio/nord-vim'
 # Plug 'maxmellon/vim-jsx-pretty'
 # Plug 'Chiel92/vim-autoformat'
 # Plug 'psf/black'
-
-# help me please
-Plug 'github/copilot.vim'
 
 plug#end()
 
@@ -81,14 +79,16 @@ def HighlightTrailingWhitespace(line1: number, line2: number)
     for lnum in range(line1, line2)
         var line_text = getline(lnum)
         var col = match(line_text, '\s\+$')
-        # Clear existing props on this line first
-        prop_clear(lnum, lnum, {type: 'ExtraWhitespace'})
+        var has_prop = !empty(prop_list(lnum, {type: 'ExtraWhitespace'}))
         if col != -1
-            # Add property to the trailing spaces (1-indexed)
-            prop_add(lnum, col + 1, {
-                type: 'ExtraWhitespace',
-                length: len(line_text) - col
-            })
+            if !has_prop
+                prop_add(lnum, col + 1, {
+                    type: 'ExtraWhitespace',
+                    length: len(line_text) - col
+                })
+            endif
+        elseif has_prop
+            prop_clear(lnum, lnum, {type: 'ExtraWhitespace'})
         endif
     endfor
 enddef
@@ -112,7 +112,7 @@ augroup MyVim9Autocmds
     autocmd!
 
     # 1. Skeletons
-    autocmd BufNewFile *.sh 0r ~/.vim/templates/bash/skeleton.sh
+    autocmd BufNewFile *.sh :0r ~/.vim/templates/bash/skeleton.sh
 
     # Whitespace Management (Text Properties Logic)
     autocmd ColorScheme * hi ExtraWhitespace ctermbg=red guibg=darkred
@@ -124,7 +124,7 @@ augroup MyVim9Autocmds
     autocmd TextChanged,TextChangedI * HighlightTrailingWhitespace(line('.'), line('.'))
 
     # Clean up properties when leaving the buffer
-    autocmd BufWinLeave * prop_clear(1, line('$'), {type: 'ExtraWhitespace'})
+    autocmd BufWinLeave * prop_clear(1, line('$'), {type: 'ExtraWhitespace', bufnr: expand('<abuf>')->str2nr()})
 
     # 3. Dynamic UI (CursorLine)
     autocmd WinEnter,BufWinEnter * setlocal cursorline
@@ -248,10 +248,7 @@ noremap <C-j> :cn<CR>zz
 noremap <C-k> :cp<CR>zz
 nnoremap =j :%!python3 -m json.tool<CR>
 
-vnoremap <silent> * :<C-U><script>
-    \ var old_reg = getreg('"'); var old_regtype = getregtype('"');
-    \ gvy/<C-R><C-R>=substitute(escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
-    \ gV:call setreg('"', old_reg, old_regtype)<CR>
+xnoremap * y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 nnoremap ' `
 nnoremap ` '

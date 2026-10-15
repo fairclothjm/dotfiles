@@ -24,3 +24,7 @@ venv
 node_modules
 .sass-cache
 testvault
+
+# Bob AI agent files
+AGENTS.md
+_context/
